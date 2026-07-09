@@ -1,0 +1,21 @@
+{
+  "id": "level_02",
+  "title": "あかい光だけを",
+  "size": 6,
+  "tolerance": 0.15,
+  "grid": {
+    "0,2": { "kind": "source", "rotation": 90, "fixed": true },
+    "2,4": { "kind": "wall", "rotation": 0, "fixed": true },
+    "3,0": { "kind": "wall", "rotation": 0, "fixed": true },
+    "5,2": {
+      "kind": "goal",
+      "rotation": 0,
+      "fixed": true,
+      "color": { "r": 1, "g": 0, "b": 0 }
+    }
+  },
+  "inventory": [
+    { "kind": "filter", "color": { "r": 1, "g": 0, "b": 0 }, "count": 1 },
+    { "kind": "mirror", "count": 2 }
+  ]
+}
