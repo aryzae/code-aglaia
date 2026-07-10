@@ -10,6 +10,7 @@ import SwiftUI
 
 struct LevelSelectView: View {
     @Environment(PrismStore.self) private var store
+    @Environment(ProgressStore.self) private var progress
     @State private var catalog = LevelCatalog(levels: [])
     @State private var loaded = false
 
@@ -75,6 +76,12 @@ struct LevelSelectView: View {
         } header: {
             HStack {
                 Text(pack.displayName)
+                if store.isUnlocked(pack), !entries.isEmpty {
+                    // パック内のクリア進捗
+                    let cleared = progress.clearedCount(in: entries.map(\.level.id))
+                    Text("クリア \(cleared)/\(entries.count)")
+                        .foregroundStyle(cleared == entries.count ? .yellow : .white.opacity(0.6))
+                }
                 Spacer()
                 Text(pack.summary)
             }
@@ -101,6 +108,13 @@ struct LevelSelectView: View {
                     Text("\(entry.level.size)×\(entry.level.size)")
                         .font(.caption)
                         .foregroundStyle(.white.opacity(0.5))
+                }
+                Spacer()
+                if progress.isCleared(entry.level.id) {
+                    // クリア済みマーク
+                    Image(systemName: "checkmark.seal.fill")
+                        .foregroundStyle(.yellow)
+                        .font(.title3)
                 }
             }
             .padding(.vertical, 4)
@@ -160,5 +174,6 @@ struct LevelSelectView: View {
         LevelSelectView()
     }
     .environment(PrismStore())
+    .environment(ProgressStore())
     .preferredColorScheme(.dark)
 }

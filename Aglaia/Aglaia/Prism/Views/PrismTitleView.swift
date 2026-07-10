@@ -10,6 +10,8 @@ import SwiftUI
 struct PrismTitleView: View {
     /// アプリ全体で共有する課金ストア
     @State private var store = PrismStore()
+    /// クリア進捗(UserDefaults 永続化)
+    @State private var progress = ProgressStore()
 
     var body: some View {
         NavigationStack {
@@ -47,6 +49,7 @@ struct PrismTitleView: View {
             }
         }
         .environment(store)
+        .environment(progress)
         .task {
             await store.loadProducts()
         }

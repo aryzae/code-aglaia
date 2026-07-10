@@ -36,6 +36,7 @@ private struct GameBoardView: View {
     @State private var model: GameModel
     @State private var scene: PrismScene
     @Environment(\.dismiss) private var dismiss
+    @Environment(ProgressStore.self) private var progress
 
     init(level: Level, stageNumber: Int, hasNext: Bool, onNext: @escaping () -> Void) {
         self.stageNumber = stageNumber
@@ -61,6 +62,11 @@ private struct GameBoardView: View {
         .navigationTitle("Stage \(stageNumber)")
         .navigationBarTitleDisplayMode(.inline)
         .toolbarColorScheme(.dark, for: .navigationBar)
+        .onChange(of: model.solved) { _, solved in
+            if solved {
+                progress.markCleared(model.level.id)
+            }
+        }
     }
 
     // MARK: - 盤面

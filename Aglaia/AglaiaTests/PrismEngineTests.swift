@@ -471,6 +471,30 @@ final class PrismEngineTests: XCTestCase {
         XCTAssertEqual(model.remainingCount(of: mirrorItem), 2)
     }
 
+    // MARK: - クリア進捗
+
+    func testProgressStore_クリア記録と永続化() throws {
+        let suiteName = "PrismEngineTests.progress"
+        let defaults = try XCTUnwrap(UserDefaults(suiteName: suiteName))
+        defaults.removePersistentDomain(forName: suiteName)
+        defer { defaults.removePersistentDomain(forName: suiteName) }
+
+        let store = ProgressStore(defaults: defaults)
+        XCTAssertFalse(store.isCleared("level_001"))
+
+        store.markCleared("level_001")
+        store.markCleared("level_003")
+        store.markCleared("level_001") // 重複記録は無視される
+        XCTAssertTrue(store.isCleared("level_001"))
+        XCTAssertFalse(store.isCleared("level_002"))
+        XCTAssertEqual(store.clearedCount(in: ["level_001", "level_002", "level_003"]), 2)
+
+        // 別インスタンスでも UserDefaults から復元される
+        let reloaded = ProgressStore(defaults: defaults)
+        XCTAssertTrue(reloaded.isCleared("level_001"))
+        XCTAssertTrue(reloaded.isCleared("level_003"))
+    }
+
     func testBoardGeometry_ビュー座標からセルを求める() {
         // 600pt 四方に 6x6 グリッド。盤面は 564pt(94%)で余白 18pt
         let geometry = BoardGeometry(canvasSize: CGSize(width: 600, height: 600), gridCount: 6)
