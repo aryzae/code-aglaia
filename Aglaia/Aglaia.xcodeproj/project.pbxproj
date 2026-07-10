@@ -8,17 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		C6E674A12C92E03600136943 /* AglaiaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6E674A02C92E03600136943 /* AglaiaApp.swift */; };
-		C6E674A32C92E03600136943 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6E674A22C92E03600136943 /* LoginView.swift */; };
 		C6E674A52C92E03800136943 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C6E674A42C92E03800136943 /* Assets.xcassets */; };
 		C6E674A92C92E03800136943 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C6E674A82C92E03800136943 /* Preview Assets.xcassets */; };
 		C6E674B32C92E03800136943 /* AglaiaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6E674B22C92E03800136943 /* AglaiaTests.swift */; };
 		C6E674BD2C92E03800136943 /* AglaiaUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6E674BC2C92E03800136943 /* AglaiaUITests.swift */; };
 		C6E674BF2C92E03800136943 /* AglaiaUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6E674BE2C92E03800136943 /* AglaiaUITestsLaunchTests.swift */; };
-		C6E674CE2C92E43100136943 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = C6E674CD2C92E43100136943 /* FirebaseAnalytics */; };
-		C6E674D02C92E43100136943 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = C6E674CF2C92E43100136943 /* FirebaseAuth */; };
-		C6E674D22C92E43100136943 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = C6E674D12C92E43100136943 /* FirebaseCrashlytics */; };
-		C6E674D92C95C0BE00136943 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C6E674D82C95C0BE00136943 /* GoogleService-Info.plist */; };
-		C6E674DD2C95D44900136943 /* SwiftFormat in Frameworks */ = {isa = PBXBuildFile; productRef = C6E674DC2C95D44900136943 /* SwiftFormat */; };
 		A11AD0DE000000000000B001 /* PrismModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11AD0DE000000000000F001 /* PrismModels.swift */; };
 		A11AD0DE000000000000B002 /* BeamTracer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11AD0DE000000000000F002 /* BeamTracer.swift */; };
 		A11AD0DE000000000000B003 /* GameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11AD0DE000000000000F003 /* GameModel.swift */; };
@@ -54,7 +48,6 @@
 		C6718DE52C95F07B0079B854 /* BuildTools */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = BuildTools; sourceTree = "<group>"; };
 		C6E6749D2C92E03600136943 /* Aglaia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Aglaia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6E674A02C92E03600136943 /* AglaiaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AglaiaApp.swift; sourceTree = "<group>"; };
-		C6E674A22C92E03600136943 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		C6E674A42C92E03800136943 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C6E674A62C92E03800136943 /* Aglaia.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Aglaia.entitlements; sourceTree = "<group>"; };
 		C6E674A82C92E03800136943 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -63,7 +56,6 @@
 		C6E674B82C92E03800136943 /* AglaiaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AglaiaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6E674BC2C92E03800136943 /* AglaiaUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AglaiaUITests.swift; sourceTree = "<group>"; };
 		C6E674BE2C92E03800136943 /* AglaiaUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AglaiaUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		C6E674D82C95C0BE00136943 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A11AD0DE000000000000F001 /* PrismModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrismModels.swift; sourceTree = "<group>"; };
 		A11AD0DE000000000000F002 /* BeamTracer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeamTracer.swift; sourceTree = "<group>"; };
 		A11AD0DE000000000000F003 /* GameModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameModel.swift; sourceTree = "<group>"; };
@@ -83,10 +75,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C6E674D22C92E43100136943 /* FirebaseCrashlytics in Frameworks */,
-				C6E674CE2C92E43100136943 /* FirebaseAnalytics in Frameworks */,
-				C6E674DD2C95D44900136943 /* SwiftFormat in Frameworks */,
-				C6E674D02C92E43100136943 /* FirebaseAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -134,8 +122,6 @@
 				C6E674A62C92E03800136943 /* Aglaia.entitlements */,
 				C6E674A02C92E03600136943 /* AglaiaApp.swift */,
 				C6E674A42C92E03800136943 /* Assets.xcassets */,
-				C6E674D72C95C07000136943 /* GoogleService */,
-				C6E674CB2C92E05400136943 /* Login */,
 				A11AD0DE0000000000000101 /* Prism */,
 				C6E674A72C92E03800136943 /* Preview Content */,
 			);
@@ -166,22 +152,6 @@
 				C6E674BE2C92E03800136943 /* AglaiaUITestsLaunchTests.swift */,
 			);
 			path = AglaiaUITests;
-			sourceTree = "<group>";
-		};
-		C6E674CB2C92E05400136943 /* Login */ = {
-			isa = PBXGroup;
-			children = (
-				C6E674A22C92E03600136943 /* LoginView.swift */,
-			);
-			path = Login;
-			sourceTree = "<group>";
-		};
-		C6E674D72C95C07000136943 /* GoogleService */ = {
-			isa = PBXGroup;
-			children = (
-				C6E674D82C95C0BE00136943 /* GoogleService-Info.plist */,
-			);
-			path = GoogleService;
 			sourceTree = "<group>";
 		};
 		A11AD0DE0000000000000101 /* Prism */ = {
@@ -269,19 +239,12 @@
 				C6E674992C92E03600136943 /* Sources */,
 				C6E6749A2C92E03600136943 /* Frameworks */,
 				C6E6749B2C92E03600136943 /* Resources */,
-				C6E674DA2C95C40200136943 /* Upload Crashlytics Symbol */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = Aglaia;
-			packageProductDependencies = (
-				C6E674CD2C92E43100136943 /* FirebaseAnalytics */,
-				C6E674CF2C92E43100136943 /* FirebaseAuth */,
-				C6E674D12C92E43100136943 /* FirebaseCrashlytics */,
-				C6E674DC2C95D44900136943 /* SwiftFormat */,
-			);
 			productName = Aglaia;
 			productReference = C6E6749D2C92E03600136943 /* Aglaia.app */;
 			productType = "com.apple.product-type.application";
@@ -354,10 +317,6 @@
 				Base,
 			);
 			mainGroup = C6E674942C92E03600136943;
-			packageReferences = (
-				C6E674CC2C92E43100136943 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
-				C6E674DB2C95D44900136943 /* XCRemoteSwiftPackageReference "SwiftFormat" */,
-			);
 			productRefGroup = C6E6749E2C92E03600136943 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -376,7 +335,6 @@
 			files = (
 				C6E674A92C92E03800136943 /* Preview Assets.xcassets in Resources */,
 				C6E674A52C92E03800136943 /* Assets.xcassets in Resources */,
-				C6E674D92C95C0BE00136943 /* GoogleService-Info.plist in Resources */,
 				A11AD0DE000000000000B009 /* Levels in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -398,25 +356,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		C6E674DA2C95C40200136943 /* Upload Crashlytics Symbol */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Upload Crashlytics Symbol";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n${BUILD_DIR%Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\n";
-		};
 		C6E674E32C95E0E500136943 /* Run SwiftFormat */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
@@ -443,7 +382,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C6E674A32C92E03600136943 /* LoginView.swift in Sources */,
 				C6E674A12C92E03600136943 /* AglaiaApp.swift in Sources */,
 				A11AD0DE000000000000B001 /* PrismModels.swift in Sources */,
 				A11AD0DE000000000000B002 /* BeamTracer.swift in Sources */,
@@ -818,47 +756,6 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCRemoteSwiftPackageReference section */
-		C6E674CC2C92E43100136943 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 11.2.0;
-			};
-		};
-		C6E674DB2C95D44900136943 /* XCRemoteSwiftPackageReference "SwiftFormat" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/nicklockwood/SwiftFormat.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.54.5;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		C6E674CD2C92E43100136943 /* FirebaseAnalytics */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C6E674CC2C92E43100136943 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseAnalytics;
-		};
-		C6E674CF2C92E43100136943 /* FirebaseAuth */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C6E674CC2C92E43100136943 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseAuth;
-		};
-		C6E674D12C92E43100136943 /* FirebaseCrashlytics */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C6E674CC2C92E43100136943 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseCrashlytics;
-		};
-		C6E674DC2C95D44900136943 /* SwiftFormat */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C6E674DB2C95D44900136943 /* XCRemoteSwiftPackageReference "SwiftFormat" */;
-			productName = SwiftFormat;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = C6E674952C92E03600136943 /* Project object */;
 }
