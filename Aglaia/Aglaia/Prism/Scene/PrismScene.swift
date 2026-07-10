@@ -63,8 +63,17 @@ final class PrismScene: SKScene {
     private var wasSolved = false
 
     // ドラッグ状態
-    private var dragSourceCell: GridPosition?
+    private enum DragMode {
+        case none
+        /// 配置済み部品の移動(元セルを保持)
+        case moveComponent(from: GridPosition)
+        /// 選択中アイテムの配置プレビュー
+        case placePreview
+    }
+
+    private var dragMode: DragMode = .none
     private var dragGhost: SKNode?
+    private var ghostHighlight: SKShapeNode?
     private var touchStartPoint: CGPoint = .zero
     private var isDragging = false
 
@@ -192,6 +201,32 @@ final class PrismScene: SKScene {
         core.lineCap = .round
         core.blendMode = .add
         container.addChild(core)
+
+        // 進行方向へ流れる光の粒(光源→先端の向きが常時わかるように)
+        let dx = to.x - from.x, dy = to.y - from.y
+        let length = hypot(dx, dy)
+        if length > cellSize * 0.3 {
+            let speed = cellSize * 2.2 // 1秒あたりの流れる距離
+            let duration = TimeInterval(length / speed)
+            let count = max(1, Int(length / (cellSize * 0.9)))
+            for index in 0 ..< count {
+                let dot = SKShapeNode(circleOfRadius: cellSize * 0.055)
+                dot.fillColor = .white
+                dot.strokeColor = .clear
+                dot.alpha = 0.85
+                dot.blendMode = .add
+                // 粒を等間隔に配置し、残り区間 → 全区間ループで途切れなく流す
+                let fraction = CGFloat(index) / CGFloat(count)
+                dot.position = CGPoint(x: from.x + dx * fraction, y: from.y + dy * fraction)
+                let firstLeg = SKAction.move(to: to, duration: duration * (1 - Double(fraction)))
+                let loop = SKAction.sequence([
+                    .move(to: from, duration: 0),
+                    .move(to: to, duration: duration),
+                ])
+                dot.run(.sequence([firstLeg, .repeatForever(loop)]))
+                container.addChild(dot)
+            }
+        }
         return container
     }
 
@@ -462,24 +497,36 @@ final class PrismScene: SKScene {
         let scenePoint = touch.location(in: self)
         touchStartPoint = scenePoint
         isDragging = false
-        // プレイヤーが置いた部品の上ならドラッグ候補にする
         if let cell = geometry.cell(atScenePoint: scenePoint), model.placements[cell] != nil {
-            dragSourceCell = cell
+            // プレイヤーが置いた部品の上 → 移動ドラッグ候補
+            dragMode = .moveComponent(from: cell)
+        } else if model.canPlaceSelectedItem {
+            // 部品選択中 → ドラッグで配置場所のプレビュー
+            dragMode = .placePreview
         } else {
-            dragSourceCell = nil
+            dragMode = .none
         }
     }
 
     override func touchesMoved(_ touches: Set<UITouch>, with _: UIEvent?) {
-        guard let touch = touches.first, let sourceCell = dragSourceCell else { return }
+        guard let touch = touches.first else { return }
         let scenePoint = touch.location(in: self)
+
         if !isDragging {
             let moved = hypot(scenePoint.x - touchStartPoint.x, scenePoint.y - touchStartPoint.y)
             guard moved > cellSize * 0.25 else { return }
-            isDragging = true
-            beginDragGhost(for: sourceCell)
+            switch dragMode {
+            case .moveComponent(let source):
+                isDragging = true
+                beginMoveGhost(for: source)
+            case .placePreview:
+                isDragging = true
+                beginPlacementGhost()
+            case .none:
+                return
+            }
         }
-        dragGhost?.position = convert(scenePoint, to: boardNode)
+        updateGhost(at: scenePoint)
     }
 
     override func touchesEnded(_ touches: Set<UITouch>, with _: UIEvent?) {
@@ -487,18 +534,28 @@ final class PrismScene: SKScene {
         let scenePoint = touch.location(in: self)
         defer { endDrag() }
 
-        guard isDragging, let sourceCell = dragSourceCell else {
-            // ドラッグでなければタップ: 配置 or 回転
+        guard isDragging else {
+            // ドラッグでなければタップ: 空セルは選択部品の配置、配置済みは回転
             if let cell = geometry.cell(atScenePoint: scenePoint) {
                 model.handleTap(at: cell)
             }
             return
         }
-        if let target = geometry.cell(atScenePoint: scenePoint) {
-            model.moveComponent(from: sourceCell, to: target)
-        } else {
-            // 盤外へドラッグ → 在庫へ回収
-            model.removeComponent(at: sourceCell)
+        switch dragMode {
+        case .moveComponent(let source):
+            if let target = geometry.cell(atScenePoint: scenePoint) {
+                model.moveComponent(from: source, to: target)
+            } else {
+                // 盤外へドラッグ → 在庫へ回収
+                model.removeComponent(at: source)
+            }
+        case .placePreview:
+            if let item = model.selectedItem,
+               let target = geometry.cell(atScenePoint: scenePoint) {
+                model.placeItem(item, at: target)
+            }
+        case .none:
+            break
         }
     }
 
@@ -506,26 +563,75 @@ final class PrismScene: SKScene {
         endDrag()
     }
 
-    /// ドラッグ中のゴースト表示を作る(元の部品は半透明にする)
-    private func beginDragGhost(for cell: GridPosition) {
+    /// 配置済み部品の移動ゴースト(元の部品は薄くする)
+    private func beginMoveGhost(for cell: GridPosition) {
         guard let component = model.placements[cell] else { return }
-        let ghost = componentNode(for: component, at: cell)
-        ghost.alpha = 0.75
-        ghost.zPosition = 100
-        ghost.setScale(1.1)
-        ghost.position = point(of: cell)
-        boardNode.addChild(ghost)
-        dragGhost = ghost
-        // 元の位置のノードを薄くする(次の再描画で復元される)
+        makeGhost(for: component)
+        dragGhost?.position = point(of: cell)
         for node in componentsNode.children where node.position == point(of: cell) {
             node.alpha = 0.25
+        }
+    }
+
+    /// 選択中アイテムの配置プレビューゴースト
+    private func beginPlacementGhost() {
+        guard let item = model.selectedItem else { return }
+        makeGhost(for: PlacedComponent(kind: item.kind, rotation: 0, color: item.color, fixed: false))
+    }
+
+    /// 半透明ゴースト+配置可否ハイライトを生成する
+    private func makeGhost(for component: PlacedComponent) {
+        let ghost = componentNode(for: component, at: GridPosition(x: -1, y: -1))
+        ghost.alpha = 0.55
+        ghost.zPosition = 100
+        boardNode.addChild(ghost)
+        dragGhost = ghost
+
+        let highlight = SKShapeNode(rectOf: CGSize(width: cellSize, height: cellSize))
+        highlight.lineWidth = 2
+        highlight.zPosition = 90
+        highlight.isHidden = true
+        boardNode.addChild(highlight)
+        ghostHighlight = highlight
+    }
+
+    /// ゴーストを指の位置に追従させ、セル上ではスナップ+配置可否を色で示す
+    private func updateGhost(at scenePoint: CGPoint) {
+        guard let ghost = dragGhost else { return }
+        if let cell = geometry.cell(atScenePoint: scenePoint) {
+            ghost.position = point(of: cell)
+            let placeable: Bool
+            switch dragMode {
+            case .moveComponent(let source):
+                placeable = cell == source ||
+                    (model.level.grid[cell] == nil && model.placements[cell] == nil)
+            case .placePreview:
+                placeable = model.level.grid[cell] == nil && model.placements[cell] == nil
+            case .none:
+                placeable = false
+            }
+            if let highlight = ghostHighlight {
+                highlight.isHidden = false
+                highlight.position = point(of: cell)
+                let tint: SKColor = placeable
+                    ? SKColor(red: 0.4, green: 1, blue: 0.6, alpha: 1)
+                    : SKColor(red: 1, green: 0.35, blue: 0.35, alpha: 1)
+                highlight.strokeColor = tint
+                highlight.fillColor = tint.withAlphaComponent(0.18)
+            }
+        } else {
+            // 盤外: 指に追従(移動ドラッグでは「回収」の合図になる)
+            ghost.position = convert(scenePoint, to: boardNode)
+            ghostHighlight?.isHidden = true
         }
     }
 
     private func endDrag() {
         dragGhost?.removeFromParent()
         dragGhost = nil
-        dragSourceCell = nil
+        ghostHighlight?.removeFromParent()
+        ghostHighlight = nil
+        dragMode = .none
         isDragging = false
         renderedRevision = -1 // 薄くした表示を元に戻すため再描画
     }

@@ -57,6 +57,11 @@ final class GameModel {
         level.inventory.first { $0.id == id }
     }
 
+    /// 選択中アイテムが(在庫的に)配置可能か
+    var canPlaceSelectedItem: Bool {
+        selectedItem.map { remainingCount(of: $0) > 0 } ?? false
+    }
+
     // MARK: - 盤面操作
 
     /// 在庫アイテムをセルに配置する。配置できたら true

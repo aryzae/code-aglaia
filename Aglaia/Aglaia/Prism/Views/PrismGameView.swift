@@ -113,11 +113,15 @@ private struct GameBoardView: View {
 
     private var palette: some View {
         VStack(spacing: 8) {
-            Text("部品をドラッグ(またはタップで選択して空きマスをタップ)で配置 / タップで回転 / 盤外へドラッグで回収")
+            // 選択中の部品の説明(盤面とパレットの間に控えめに表示)
+            Text(selectionHint)
                 .font(.caption2)
-                .foregroundStyle(.white.opacity(0.6))
+                .foregroundStyle(.white.opacity(0.65))
                 .multilineTextAlignment(.center)
+                .lineLimit(2)
+                .frame(minHeight: 28)
                 .padding(.horizontal)
+                .animation(.easeInOut(duration: 0.15), value: selectionHint)
             HStack(spacing: 12) {
                 ForEach(model.level.inventory) { item in
                     paletteButton(for: item)
@@ -156,6 +160,44 @@ private struct GameBoardView: View {
         .disabled(remaining == 0)
         .opacity(remaining == 0 ? 0.35 : 1)
         .draggable(item.id) // 盤面へのドラッグ&ドロップ配置
+    }
+
+    /// 選択中の部品名+説明。未選択時は基本操作のヒントを出す
+    private var selectionHint: String {
+        guard let item = model.selectedItem else {
+            return "部品をタップで選択 / 盤面をドラッグで配置場所をプレビュー"
+        }
+        return "【\(displayName(for: item.kind))】\(explanation(for: item.kind))"
+    }
+
+    private func displayName(for kind: ComponentKind) -> String {
+        switch kind {
+        case .mirror: return "鏡"
+        case .splitter: return "スプリッタ"
+        case .prism: return "プリズム"
+        case .filter: return "フィルタ"
+        case .combiner: return "合成器"
+        case .shifter: return "カラーシフタ"
+        case .source: return "光源"
+        case .goal: return "結晶"
+        case .wall: return "壁"
+        case .warp: return "ワープゲート"
+        }
+    }
+
+    private func explanation(for kind: ComponentKind) -> String {
+        switch kind {
+        case .mirror: return "光を直角にはね返す。タップで向きを回転"
+        case .splitter: return "半分をはね返し、半分をそのまま通す"
+        case .prism: return "光を赤(直進)・緑(左折)・青(右折)に分ける"
+        case .filter: return "フィルタと同じ色の成分だけを通す"
+        case .combiner: return "入ってきた光を足し合わせ、矢印の向きへ出す。タップで回転"
+        case .shifter: return "色を 赤→緑→青→赤 の順にひとつ回す"
+        case .source: return "ここから光が出る"
+        case .goal: return "目標の色の光を当てるとクリア"
+        case .wall: return "光を止める"
+        case .warp: return "同じ色の対のゲートへ光がワープする"
+        }
     }
 
     @ViewBuilder
