@@ -1,0 +1,47 @@
+{
+  "id": "level_003",
+  "title": "むらさきの結晶",
+  "size": 7,
+  "tolerance": 0.15,
+  "grid": {
+    "0,3": {
+      "kind": "source",
+      "rotation": 90,
+      "fixed": true
+    },
+    "3,2": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "5,1": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "6,3": {
+      "kind": "goal",
+      "rotation": 0,
+      "fixed": true,
+      "color": {
+        "r": 1,
+        "g": 0,
+        "b": 1
+      }
+    }
+  },
+  "inventory": [
+    {
+      "kind": "prism",
+      "count": 1
+    },
+    {
+      "kind": "combiner",
+      "count": 1
+    },
+    {
+      "kind": "mirror",
+      "count": 3
+    }
+  ]
+}

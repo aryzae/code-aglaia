@@ -12,6 +12,9 @@ import Foundation
 
 enum ComponentKind: String, Codable, Hashable {
     case source, mirror, prism, filter, combiner, wall, goal
+    /// スプリッタ(ハーフミラー)。入射光を「半分反射・半分透過」に分ける。
+    /// スタンダードパック(ステージ11以降)から登場する拡張部品
+    case splitter
 }
 
 // MARK: - 方向
@@ -56,6 +59,11 @@ struct BeamColor: Codable, Hashable {
     /// フィルタ通過(成分ごとの積)
     func filtered(by filter: BeamColor) -> BeamColor {
         BeamColor(r: r * filter.r, g: g * filter.g, b: b * filter.b)
+    }
+
+    /// 強度スケール(スプリッタの半減などに使う)
+    func scaled(by factor: Float) -> BeamColor {
+        BeamColor(r: r * factor, g: g * factor, b: b * factor)
     }
 
     /// 目標色とのユークリッド距離

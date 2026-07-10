@@ -51,9 +51,7 @@ private struct GameBoardView: View {
             Color(red: 0.05, green: 0.05, blue: 0.12).ignoresSafeArea()
             VStack(spacing: 0) {
                 header
-                SpriteView(scene: scene)
-                    .aspectRatio(1, contentMode: .fit)
-                    .padding(.horizontal, 4)
+                board
                 palette
             }
             if model.solved {
@@ -63,6 +61,25 @@ private struct GameBoardView: View {
         .navigationTitle("Stage \(stageNumber)")
         .navigationBarTitleDisplayMode(.inline)
         .toolbarColorScheme(.dark, for: .navigationBar)
+    }
+
+    // MARK: - 盤面
+
+    /// SpriteKit の盤面。パレットからのドロップを受け付ける
+    private var board: some View {
+        GeometryReader { proxy in
+            SpriteView(scene: scene)
+                .dropDestination(for: String.self) { itemIDs, location in
+                    guard let id = itemIDs.first, let item = model.item(withID: id) else { return false }
+                    let geometry = BoardGeometry(canvasSize: proxy.size, gridCount: model.level.size)
+                    guard let cell = geometry.cell(atViewPoint: location, viewSize: proxy.size) else {
+                        return false
+                    }
+                    return model.placeItem(item, at: cell)
+                }
+        }
+        .aspectRatio(1, contentMode: .fit)
+        .padding(.horizontal, 4)
     }
 
     // MARK: - 上部バー
@@ -96,26 +113,16 @@ private struct GameBoardView: View {
 
     private var palette: some View {
         VStack(spacing: 8) {
-            Text(model.eraseMode
-                ? "回収したい部品をタップ"
-                : "部品を選んで空きマスをタップ / 配置済みはタップで回転")
-                .font(.caption)
+            Text("部品をドラッグ(またはタップで選択して空きマスをタップ)で配置 / タップで回転 / 盤外へドラッグで回収")
+                .font(.caption2)
                 .foregroundStyle(.white.opacity(0.6))
+                .multilineTextAlignment(.center)
+                .padding(.horizontal)
             HStack(spacing: 12) {
                 ForEach(model.level.inventory) { item in
                     paletteButton(for: item)
                 }
                 Spacer()
-                Button {
-                    model.eraseMode.toggle()
-                } label: {
-                    Image(systemName: "eraser")
-                        .font(.title2)
-                        .frame(width: 52, height: 52)
-                        .background(model.eraseMode ? Color.red.opacity(0.5) : Color.white.opacity(0.08),
-                                    in: RoundedRectangle(cornerRadius: 12))
-                }
-                .tint(.white)
             }
             .padding(.horizontal)
         }
@@ -126,9 +133,8 @@ private struct GameBoardView: View {
 
     private func paletteButton(for item: InventoryItem) -> some View {
         let remaining = model.remainingCount(of: item)
-        let isSelected = model.selectedItem == item && !model.eraseMode
+        let isSelected = model.selectedItem == item
         return Button {
-            model.eraseMode = false
             model.selectedItem = item
         } label: {
             VStack(spacing: 2) {
@@ -149,6 +155,7 @@ private struct GameBoardView: View {
         .tint(.white)
         .disabled(remaining == 0)
         .opacity(remaining == 0 ? 0.35 : 1)
+        .draggable(item.id) // 盤面へのドラッグ&ドロップ配置
     }
 
     @ViewBuilder
@@ -156,6 +163,8 @@ private struct GameBoardView: View {
         switch item.kind {
         case .mirror:
             Image(systemName: "line.diagonal")
+        case .splitter:
+            Image(systemName: "square.split.diagonal")
         case .prism:
             Image(systemName: "triangle")
         case .filter:

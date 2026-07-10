@@ -1,0 +1,53 @@
+{
+  "id": "level_011",
+  "title": "わけあう光",
+  "size": 7,
+  "tolerance": 0.15,
+  "grid": {
+    "0,3": {
+      "kind": "source",
+      "rotation": 90,
+      "fixed": true
+    },
+    "1,5": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "3,6": {
+      "kind": "goal",
+      "rotation": 0,
+      "fixed": true,
+      "color": {
+        "r": 0.5,
+        "g": 0.5,
+        "b": 0.5
+      }
+    },
+    "5,1": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "6,3": {
+      "kind": "goal",
+      "rotation": 0,
+      "fixed": true,
+      "color": {
+        "r": 0.5,
+        "g": 0.5,
+        "b": 0.5
+      }
+    }
+  },
+  "inventory": [
+    {
+      "kind": "splitter",
+      "count": 1
+    },
+    {
+      "kind": "mirror",
+      "count": 1
+    }
+  ]
+}

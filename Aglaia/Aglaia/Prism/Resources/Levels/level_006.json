@@ -1,0 +1,47 @@
+{
+  "id": "level_006",
+  "title": "きいろをつくる",
+  "size": 7,
+  "tolerance": 0.15,
+  "grid": {
+    "0,3": {
+      "kind": "source",
+      "rotation": 90,
+      "fixed": true
+    },
+    "1,5": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "3,1": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "6,3": {
+      "kind": "goal",
+      "rotation": 0,
+      "fixed": true,
+      "color": {
+        "r": 1,
+        "g": 1,
+        "b": 0
+      }
+    }
+  },
+  "inventory": [
+    {
+      "kind": "prism",
+      "count": 1
+    },
+    {
+      "kind": "combiner",
+      "count": 1
+    },
+    {
+      "kind": "mirror",
+      "count": 2
+    }
+  ]
+}

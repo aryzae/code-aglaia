@@ -1,0 +1,57 @@
+{
+  "id": "level_010",
+  "title": "ふたつのこたえ",
+  "size": 8,
+  "tolerance": 0.15,
+  "grid": {
+    "0,4": {
+      "kind": "source",
+      "rotation": 90,
+      "fixed": true
+    },
+    "4,0": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "6,2": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "7,4": {
+      "kind": "goal",
+      "rotation": 0,
+      "fixed": true,
+      "color": {
+        "r": 1,
+        "g": 0,
+        "b": 0
+      }
+    },
+    "7,6": {
+      "kind": "goal",
+      "rotation": 0,
+      "fixed": true,
+      "color": {
+        "r": 0,
+        "g": 1,
+        "b": 1
+      }
+    }
+  },
+  "inventory": [
+    {
+      "kind": "prism",
+      "count": 1
+    },
+    {
+      "kind": "combiner",
+      "count": 1
+    },
+    {
+      "kind": "mirror",
+      "count": 3
+    }
+  ]
+}

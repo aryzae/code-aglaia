@@ -14,7 +14,7 @@ final class PrismEngineTests: XCTestCase {
 
     private func makeStage1() -> Level {
         Level(
-            id: "level_01", title: "はじめての光", size: 6, tolerance: 0.15,
+            id: "level_001", title: "はじめての光", size: 6, tolerance: 0.15,
             grid: [
                 GridPosition(x: 0, y: 2): PlacedComponent(kind: .source, rotation: 90, fixed: true),
                 GridPosition(x: 3, y: 2): PlacedComponent(kind: .wall, fixed: true),
@@ -26,7 +26,7 @@ final class PrismEngineTests: XCTestCase {
 
     private func makeStage2() -> Level {
         Level(
-            id: "level_02", title: "あかい光だけを", size: 6, tolerance: 0.15,
+            id: "level_002", title: "あかい光だけを", size: 6, tolerance: 0.15,
             grid: [
                 GridPosition(x: 0, y: 2): PlacedComponent(kind: .source, rotation: 90, fixed: true),
                 GridPosition(x: 2, y: 4): PlacedComponent(kind: .wall, fixed: true),
@@ -42,7 +42,7 @@ final class PrismEngineTests: XCTestCase {
 
     private func makeStage3() -> Level {
         Level(
-            id: "level_03", title: "むらさきの結晶", size: 7, tolerance: 0.15,
+            id: "level_003", title: "むらさきの結晶", size: 7, tolerance: 0.15,
             grid: [
                 GridPosition(x: 0, y: 3): PlacedComponent(kind: .source, rotation: 90, fixed: true),
                 GridPosition(x: 3, y: 2): PlacedComponent(kind: .wall, fixed: true),
@@ -202,7 +202,137 @@ final class PrismEngineTests: XCTestCase {
 
     func testバンドルの全ステージが読み込める() {
         let levels = LevelLoader.loadAll()
-        XCTAssertEqual(levels.count, 3)
-        XCTAssertEqual(levels.map(\.id), ["level_01", "level_02", "level_03"])
+        XCTAssertEqual(levels.count, 13)
+        XCTAssertEqual(levels.first?.id, "level_001")
+        XCTAssertEqual(levels.last?.id, "level_051")
+    }
+
+    // MARK: - スプリッタ(ハーフミラー)
+
+    func testSplitter_半分反射半分透過() {
+        // ステージ11「わけあう光」と同じ構成:
+        // スプリッタ1枚で白色光を半分ずつ2つのゴールへ分ける
+        let halfWhite = BeamColor(r: 0.5, g: 0.5, b: 0.5)
+        let level = Level(
+            id: "level_011", title: "わけあう光", size: 7, tolerance: 0.15,
+            grid: [
+                GridPosition(x: 0, y: 3): PlacedComponent(kind: .source, rotation: 90, fixed: true),
+                GridPosition(x: 1, y: 5): PlacedComponent(kind: .wall, fixed: true),
+                GridPosition(x: 5, y: 1): PlacedComponent(kind: .wall, fixed: true),
+                GridPosition(x: 6, y: 3): PlacedComponent(kind: .goal, color: halfWhite, fixed: true),
+                GridPosition(x: 3, y: 6): PlacedComponent(kind: .goal, color: halfWhite, fixed: true),
+            ],
+            inventory: [InventoryItem(kind: .splitter, color: nil, count: 1)]
+        )
+        // 初期状態: 白色光がそのままゴールに入るが強すぎて未クリア
+        XCTAssertFalse(BeamTracer.trace(level: level, placements: [:]).solved)
+
+        let placements: [GridPosition: PlacedComponent] = [
+            GridPosition(x: 3, y: 3): PlacedComponent(kind: .splitter, rotation: 0),
+        ]
+        let result = BeamTracer.trace(level: level, placements: placements)
+        XCTAssertTrue(result.solved)
+        XCTAssertEqual(result.goalColors[GridPosition(x: 6, y: 3)], halfWhite)
+        XCTAssertEqual(result.goalColors[GridPosition(x: 3, y: 6)], halfWhite)
+    }
+
+    func testSplitter_合成器と組み合わせてオレンジを作る() {
+        // ステージ51「オレンジの結晶」と同じ構成:
+        // 分光した G をスプリッタで半減させ、R と合成して (1, 0.5, 0) を作る
+        let orange = BeamColor(r: 1, g: 0.5, b: 0)
+        let level = Level(
+            id: "level_051", title: "オレンジの結晶", size: 8, tolerance: 0.15,
+            grid: [
+                GridPosition(x: 0, y: 4): PlacedComponent(kind: .source, rotation: 90, fixed: true),
+                GridPosition(x: 1, y: 1): PlacedComponent(kind: .wall, fixed: true),
+                GridPosition(x: 6, y: 6): PlacedComponent(kind: .wall, fixed: true),
+                GridPosition(x: 7, y: 4): PlacedComponent(kind: .goal, color: orange, fixed: true),
+            ],
+            inventory: [
+                InventoryItem(kind: .prism, color: nil, count: 1),
+                InventoryItem(kind: .splitter, color: nil, count: 1),
+                InventoryItem(kind: .combiner, color: nil, count: 1),
+                InventoryItem(kind: .mirror, color: nil, count: 3),
+            ]
+        )
+        XCTAssertFalse(BeamTracer.trace(level: level, placements: [:]).solved)
+
+        let placements: [GridPosition: PlacedComponent] = [
+            GridPosition(x: 2, y: 4): PlacedComponent(kind: .prism, rotation: 0),
+            GridPosition(x: 2, y: 6): PlacedComponent(kind: .mirror, rotation: 0),
+            GridPosition(x: 4, y: 6): PlacedComponent(kind: .splitter, rotation: 0),
+            GridPosition(x: 5, y: 6): PlacedComponent(kind: .mirror, rotation: 90),
+            GridPosition(x: 5, y: 4): PlacedComponent(kind: .combiner, rotation: 90),
+        ]
+        let result = BeamTracer.trace(level: level, placements: placements)
+        XCTAssertTrue(result.solved)
+        XCTAssertEqual(result.goalColors[GridPosition(x: 7, y: 4)], orange)
+    }
+
+    // MARK: - ステージパック
+
+    func testLevelPack_番号からパックを判定する() {
+        XCTAssertEqual(LevelPack.pack(forStageNumber: 1), .free)
+        XCTAssertEqual(LevelPack.pack(forStageNumber: 10), .free)
+        XCTAssertEqual(LevelPack.pack(forStageNumber: 11), .standard)
+        XCTAssertEqual(LevelPack.pack(forStageNumber: 50), .standard)
+        XCTAssertEqual(LevelPack.pack(forStageNumber: 51), .extra)
+        XCTAssertEqual(LevelPack.pack(forStageNumber: 100), .extra)
+        XCTAssertNil(LevelPack.pack(forStageNumber: 101))
+    }
+
+    func testLevelCatalog_パック別の振り分けと解放判定() {
+        let catalog = LevelCatalog(levels: LevelLoader.loadAll())
+        XCTAssertEqual(catalog.entries(in: .free).count, 10)
+        XCTAssertEqual(catalog.entries(in: .standard).count, 2)
+        XCTAssertEqual(catalog.entries(in: .extra).count, 1)
+
+        // 無料のみ → 10ステージ、全パック解放 → 13ステージ
+        XCTAssertEqual(catalog.playableLevels(unlockedPacks: [.free]).count, 10)
+        XCTAssertEqual(catalog.playableLevels(unlockedPacks: [.free, .standard, .extra]).count, 13)
+        // 並び順はステージ番号順
+        XCTAssertEqual(catalog.playableLevels(unlockedPacks: [.free, .standard]).last?.id, "level_012")
+    }
+
+    func testLevelCatalog_IDから番号を取り出す() {
+        XCTAssertEqual(LevelCatalog.stageNumber(fromID: "level_001"), 1)
+        XCTAssertEqual(LevelCatalog.stageNumber(fromID: "level_051"), 51)
+        XCTAssertNil(LevelCatalog.stageNumber(fromID: "broken"))
+    }
+
+    // MARK: - D&D 用の盤面操作
+
+    func testGameModel_部品の移動と回収() {
+        let model = GameModel(level: makeStage1())
+        let mirrorItem = model.level.inventory[0]
+
+        XCTAssertTrue(model.placeItem(mirrorItem, at: GridPosition(x: 2, y: 2)))
+        // 移動
+        XCTAssertTrue(model.moveComponent(from: GridPosition(x: 2, y: 2),
+                                          to: GridPosition(x: 1, y: 1)))
+        XCTAssertNil(model.placements[GridPosition(x: 2, y: 2)])
+        XCTAssertNotNil(model.placements[GridPosition(x: 1, y: 1)])
+        // 固定部品の上には移動できない
+        XCTAssertFalse(model.moveComponent(from: GridPosition(x: 1, y: 1),
+                                           to: GridPosition(x: 3, y: 2)))
+        // 回収すると在庫が戻る
+        model.removeComponent(at: GridPosition(x: 1, y: 1))
+        XCTAssertEqual(model.remainingCount(of: mirrorItem), 2)
+    }
+
+    func testBoardGeometry_ビュー座標からセルを求める() {
+        // 600pt 四方に 6x6 グリッド。盤面は 564pt(94%)で余白 18pt
+        let geometry = BoardGeometry(canvasSize: CGSize(width: 600, height: 600), gridCount: 6)
+        // 左下セル(ビュー座標は y が下向きなので下端近く)
+        XCTAssertEqual(geometry.cell(atViewPoint: CGPoint(x: 60, y: 540),
+                                     viewSize: CGSize(width: 600, height: 600)),
+                       GridPosition(x: 0, y: 0))
+        // 右上セル
+        XCTAssertEqual(geometry.cell(atViewPoint: CGPoint(x: 540, y: 60),
+                                     viewSize: CGSize(width: 600, height: 600)),
+                       GridPosition(x: 5, y: 5))
+        // 盤外(余白部分)
+        XCTAssertNil(geometry.cell(atViewPoint: CGPoint(x: 5, y: 5),
+                                   viewSize: CGSize(width: 600, height: 600)))
     }
 }

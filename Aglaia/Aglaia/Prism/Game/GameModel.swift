@@ -18,8 +18,6 @@ final class GameModel {
     private(set) var traceResult = TraceResult()
     /// パレットで選択中の在庫アイテム
     var selectedItem: InventoryItem?
-    /// 削除モード(ON のときは配置済み部品をタップで回収)
-    var eraseMode = false
     /// 盤面変更のたびに増える世代番号。SKScene 側の再描画トリガに使う
     private(set) var revision = 0
 
@@ -54,13 +52,17 @@ final class GameModel {
         return max(0, item.count - placed)
     }
 
+    /// パレットのドラッグ&ドロップで使う ID からの逆引き
+    func item(withID id: String) -> InventoryItem? {
+        level.inventory.first { $0.id == id }
+    }
+
     // MARK: - 盤面操作
 
-    /// 選択中の部品をセルに配置する。配置できたら true
+    /// 在庫アイテムをセルに配置する。配置できたら true
     @discardableResult
-    func placeSelectedItem(at position: GridPosition) -> Bool {
-        guard let item = selectedItem,
-              level.contains(position),
+    func placeItem(_ item: InventoryItem, at position: GridPosition) -> Bool {
+        guard level.contains(position),
               level.grid[position] == nil,
               placements[position] == nil,
               remainingCount(of: item) > 0
@@ -68,6 +70,30 @@ final class GameModel {
 
         pushHistory()
         placements[position] = PlacedComponent(kind: item.kind, rotation: 0, color: item.color, fixed: false)
+        recomputeBeams()
+        return true
+    }
+
+    /// 選択中の部品をセルに配置する。配置できたら true
+    @discardableResult
+    func placeSelectedItem(at position: GridPosition) -> Bool {
+        guard let item = selectedItem else { return false }
+        return placeItem(item, at: position)
+    }
+
+    /// 配置済み部品をドラッグで別セルへ移動する。移動できたら true
+    @discardableResult
+    func moveComponent(from: GridPosition, to: GridPosition) -> Bool {
+        guard from != to,
+              let component = placements[from],
+              level.contains(to),
+              level.grid[to] == nil,
+              placements[to] == nil
+        else { return false }
+
+        pushHistory()
+        placements[from] = nil
+        placements[to] = component
         recomputeBeams()
         return true
     }
@@ -88,11 +114,11 @@ final class GameModel {
         recomputeBeams()
     }
 
-    /// セルタップの共通ハンドラ
+    /// セルタップの共通ハンドラ(配置済みは回転、空セルは選択中アイテムを配置)
     func handleTap(at position: GridPosition) {
         if placements[position] != nil {
-            eraseMode ? removeComponent(at: position) : rotateComponent(at: position)
-        } else if !eraseMode {
+            rotateComponent(at: position)
+        } else {
             placeSelectedItem(at: position)
         }
     }

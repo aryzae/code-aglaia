@@ -1,0 +1,48 @@
+{
+  "id": "level_005",
+  "title": "みどりのゆくえ",
+  "size": 7,
+  "tolerance": 0.15,
+  "grid": {
+    "0,3": {
+      "kind": "source",
+      "rotation": 90,
+      "fixed": true
+    },
+    "0,5": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "4,3": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "5,5": {
+      "kind": "goal",
+      "rotation": 0,
+      "fixed": true,
+      "color": {
+        "r": 0,
+        "g": 1,
+        "b": 0
+      }
+    },
+    "6,1": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    }
+  },
+  "inventory": [
+    {
+      "kind": "prism",
+      "count": 1
+    },
+    {
+      "kind": "mirror",
+      "count": 2
+    }
+  ]
+}

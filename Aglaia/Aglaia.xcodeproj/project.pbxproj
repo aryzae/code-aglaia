@@ -30,6 +30,8 @@
 		A11AD0DE000000000000B008 /* PrismGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11AD0DE000000000000F008 /* PrismGameView.swift */; };
 		A11AD0DE000000000000B009 /* Levels in Resources */ = {isa = PBXBuildFile; fileRef = A11AD0DE000000000000F009 /* Levels */; };
 		A11AD0DE000000000000B00A /* PrismEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11AD0DE000000000000F00A /* PrismEngineTests.swift */; };
+		A11AD0DE000000000000B00B /* LevelCatalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11AD0DE000000000000F00B /* LevelCatalog.swift */; };
+		A11AD0DE000000000000B00C /* PrismStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11AD0DE000000000000F00C /* PrismStore.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,6 +75,8 @@
 		A11AD0DE000000000000F008 /* PrismGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrismGameView.swift; sourceTree = "<group>"; };
 		A11AD0DE000000000000F009 /* Levels */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Levels; sourceTree = "<group>"; };
 		A11AD0DE000000000000F00A /* PrismEngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrismEngineTests.swift; sourceTree = "<group>"; };
+		A11AD0DE000000000000F00B /* LevelCatalog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelCatalog.swift; sourceTree = "<group>"; };
+		A11AD0DE000000000000F00C /* PrismStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrismStore.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -189,6 +193,7 @@
 				A11AD0DE0000000000000103 /* Engine */,
 				A11AD0DE0000000000000104 /* Game */,
 				A11AD0DE0000000000000105 /* Scene */,
+				A11AD0DE0000000000000108 /* Store */,
 				A11AD0DE0000000000000106 /* Views */,
 				A11AD0DE0000000000000107 /* Resources */,
 			);
@@ -215,9 +220,18 @@
 			isa = PBXGroup;
 			children = (
 				A11AD0DE000000000000F003 /* GameModel.swift */,
+				A11AD0DE000000000000F00B /* LevelCatalog.swift */,
 				A11AD0DE000000000000F004 /* LevelLoader.swift */,
 			);
 			path = Game;
+			sourceTree = "<group>";
+		};
+		A11AD0DE0000000000000108 /* Store */ = {
+			isa = PBXGroup;
+			children = (
+				A11AD0DE000000000000F00C /* PrismStore.swift */,
+			);
+			path = Store;
 			sourceTree = "<group>";
 		};
 		A11AD0DE0000000000000105 /* Scene */ = {
@@ -443,6 +457,8 @@
 				A11AD0DE000000000000B006 /* PrismTitleView.swift in Sources */,
 				A11AD0DE000000000000B007 /* LevelSelectView.swift in Sources */,
 				A11AD0DE000000000000B008 /* PrismGameView.swift in Sources */,
+				A11AD0DE000000000000B00B /* LevelCatalog.swift in Sources */,
+				A11AD0DE000000000000B00C /* PrismStore.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

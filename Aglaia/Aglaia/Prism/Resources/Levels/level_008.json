@@ -1,0 +1,63 @@
+{
+  "id": "level_008",
+  "title": "とおまわり",
+  "size": 8,
+  "tolerance": 0.15,
+  "grid": {
+    "0,4": {
+      "kind": "source",
+      "rotation": 90,
+      "fixed": true
+    },
+    "2,2": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "2,3": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "2,4": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "2,5": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "2,6": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "4,0": {
+      "kind": "goal",
+      "rotation": 0,
+      "fixed": true,
+      "color": {
+        "r": 1,
+        "g": 0,
+        "b": 0
+      }
+    }
+  },
+  "inventory": [
+    {
+      "kind": "mirror",
+      "count": 3
+    },
+    {
+      "kind": "filter",
+      "count": 1,
+      "color": {
+        "r": 1,
+        "g": 0,
+        "b": 0
+      }
+    }
+  ]
+}

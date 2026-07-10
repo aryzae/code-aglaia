@@ -144,6 +144,12 @@ enum BeamTracer {
                     enqueue(Beam(origin: next, direction: beam.direction.turnedRight,
                                  color: BeamColor(r: 0, g: 0, b: beam.color.b)))
 
+                case .splitter:
+                    // ハーフミラー: 鏡と同じ向き規則で半分を反射し、残り半分は直進
+                    let reflected = reflect(beam.direction, mirrorRotation: component.rotation)
+                    enqueue(Beam(origin: next, direction: reflected, color: beam.color.scaled(by: 0.5)))
+                    enqueue(Beam(origin: next, direction: beam.direction, color: beam.color.scaled(by: 0.5)))
+
                 case .combiner:
                     // 出力面(rotation の向き)へ入射した光は吸収。それ以外の面は入力として蓄積
                     if beam.direction != component.direction.opposite {

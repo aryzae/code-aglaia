@@ -1,0 +1,47 @@
+{
+  "id": "level_009",
+  "title": "みずいろ",
+  "size": 8,
+  "tolerance": 0.15,
+  "grid": {
+    "0,4": {
+      "kind": "source",
+      "rotation": 90,
+      "fixed": true
+    },
+    "1,6": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "6,5": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "7,1": {
+      "kind": "goal",
+      "rotation": 0,
+      "fixed": true,
+      "color": {
+        "r": 0,
+        "g": 1,
+        "b": 1
+      }
+    }
+  },
+  "inventory": [
+    {
+      "kind": "prism",
+      "count": 1
+    },
+    {
+      "kind": "combiner",
+      "count": 1
+    },
+    {
+      "kind": "mirror",
+      "count": 3
+    }
+  ]
+}

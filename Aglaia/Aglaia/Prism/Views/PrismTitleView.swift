@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct PrismTitleView: View {
+    /// アプリ全体で共有する課金ストア
+    @State private var store = PrismStore()
+
     var body: some View {
         NavigationStack {
             ZStack {
@@ -42,6 +45,10 @@ struct PrismTitleView: View {
                     Spacer().frame(height: 60)
                 }
             }
+        }
+        .environment(store)
+        .task {
+            await store.loadProducts()
         }
         .preferredColorScheme(.dark)
     }
