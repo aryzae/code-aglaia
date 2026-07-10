@@ -1,0 +1,63 @@
+{
+  "id": "level_015",
+  "title": "みっつの結晶",
+  "size": 8,
+  "tolerance": 0.15,
+  "grid": {
+    "0,4": {
+      "kind": "source",
+      "rotation": 90,
+      "fixed": true
+    },
+    "1,2": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "2,6": {
+      "kind": "goal",
+      "rotation": 0,
+      "fixed": true,
+      "color": {
+        "r": 0,
+        "g": 1,
+        "b": 0
+      }
+    },
+    "6,2": {
+      "kind": "goal",
+      "rotation": 0,
+      "fixed": true,
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 1
+      }
+    },
+    "6,6": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "7,4": {
+      "kind": "goal",
+      "rotation": 0,
+      "fixed": true,
+      "color": {
+        "r": 1,
+        "g": 0,
+        "b": 0
+      }
+    }
+  },
+  "inventory": [
+    {
+      "kind": "prism",
+      "count": 1
+    },
+    {
+      "kind": "mirror",
+      "count": 3
+    }
+  ]
+}

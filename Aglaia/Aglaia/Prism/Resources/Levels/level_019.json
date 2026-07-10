@@ -1,0 +1,83 @@
+{
+  "id": "level_019",
+  "title": "壁のむこう",
+  "size": 9,
+  "tolerance": 0.15,
+  "grid": {
+    "0,4": {
+      "kind": "source",
+      "rotation": 90,
+      "fixed": true
+    },
+    "4,0": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "4,1": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "4,2": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "4,3": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "4,5": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "4,6": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "4,7": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "4,8": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "8,2": {
+      "kind": "goal",
+      "rotation": 0,
+      "fixed": true,
+      "color": {
+        "r": 0.5,
+        "g": 0.5,
+        "b": 0.5
+      }
+    },
+    "8,6": {
+      "kind": "goal",
+      "rotation": 0,
+      "fixed": true,
+      "color": {
+        "r": 0.5,
+        "g": 0.5,
+        "b": 0.5
+      }
+    }
+  },
+  "inventory": [
+    {
+      "kind": "splitter",
+      "count": 1
+    },
+    {
+      "kind": "mirror",
+      "count": 4
+    }
+  ]
+}

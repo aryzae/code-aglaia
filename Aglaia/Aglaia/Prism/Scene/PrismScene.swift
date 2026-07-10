@@ -272,6 +272,24 @@ final class PrismScene: SKScene {
             through.lineWidth = 2
             node.addChild(through)
 
+        case .shifter:
+            // カラーシフタ: 円環+R/G/Bの3点で「色が巡回する」ことを表す
+            let ring = SKShapeNode(circleOfRadius: unit * 0.8)
+            ring.strokeColor = SKColor(white: 1, alpha: 0.7)
+            ring.lineWidth = 2
+            node.addChild(ring)
+            let dotColors: [SKColor] = [.red, .green, .blue]
+            for (index, dotColor) in dotColors.enumerated() {
+                // 上から時計回りに R→G→B を配置
+                let angle = CGFloat.pi / 2 - CGFloat(index) * 2 * CGFloat.pi / 3
+                let dot = SKShapeNode(circleOfRadius: unit * 0.18)
+                dot.fillColor = dotColor
+                dot.strokeColor = .clear
+                dot.blendMode = .add
+                dot.position = CGPoint(x: cos(angle) * unit * 0.8, y: sin(angle) * unit * 0.8)
+                node.addChild(dot)
+            }
+
         case .prism:
             let triangle = polygonNode(points: [
                 CGPoint(x: 0, y: unit), CGPoint(x: unit, y: -unit), CGPoint(x: -unit, y: -unit),

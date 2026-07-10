@@ -1,0 +1,83 @@
+{
+  "id": "level_020",
+  "title": "よっつの結晶",
+  "size": 9,
+  "tolerance": 0.15,
+  "grid": {
+    "0,4": {
+      "kind": "source",
+      "rotation": 90,
+      "fixed": true
+    },
+    "1,7": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "2,8": {
+      "kind": "goal",
+      "rotation": 0,
+      "fixed": true,
+      "color": {
+        "r": 0.5,
+        "g": 0.5,
+        "b": 0.5
+      }
+    },
+    "4,0": {
+      "kind": "source",
+      "rotation": 0,
+      "fixed": true
+    },
+    "4,8": {
+      "kind": "goal",
+      "rotation": 0,
+      "fixed": true,
+      "color": {
+        "r": 0.5,
+        "g": 0.5,
+        "b": 0.5
+      }
+    },
+    "6,6": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "7,1": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "8,2": {
+      "kind": "goal",
+      "rotation": 0,
+      "fixed": true,
+      "color": {
+        "r": 0.5,
+        "g": 0.5,
+        "b": 0.5
+      }
+    },
+    "8,4": {
+      "kind": "goal",
+      "rotation": 0,
+      "fixed": true,
+      "color": {
+        "r": 0.5,
+        "g": 0.5,
+        "b": 0.5
+      }
+    }
+  },
+  "inventory": [
+    {
+      "kind": "splitter",
+      "count": 2
+    },
+    {
+      "kind": "mirror",
+      "count": 2
+    }
+  ]
+}

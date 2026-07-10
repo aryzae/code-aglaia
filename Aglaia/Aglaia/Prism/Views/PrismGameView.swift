@@ -165,6 +165,8 @@ private struct GameBoardView: View {
             Image(systemName: "line.diagonal")
         case .splitter:
             Image(systemName: "square.split.diagonal")
+        case .shifter:
+            Image(systemName: "arrow.triangle.2.circlepath")
         case .prism:
             Image(systemName: "triangle")
         case .filter:

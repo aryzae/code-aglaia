@@ -15,6 +15,9 @@ enum ComponentKind: String, Codable, Hashable {
     /// スプリッタ(ハーフミラー)。入射光を「半分反射・半分透過」に分ける。
     /// スタンダードパック(ステージ11以降)から登場する拡張部品
     case splitter
+    /// カラーシフタ(回転プリズム)。色成分を R→G→B→R と巡回させて直進。
+    /// スタンダードパック後半(ステージ22以降)から登場する拡張部品
+    case shifter
 }
 
 // MARK: - 方向
@@ -64,6 +67,11 @@ struct BeamColor: Codable, Hashable {
     /// 強度スケール(スプリッタの半減などに使う)
     func scaled(by factor: Float) -> BeamColor {
         BeamColor(r: r * factor, g: g * factor, b: b * factor)
+    }
+
+    /// カラーシフタ通過(成分の巡回シフト R→G→B→R。赤→緑→青→赤)
+    var shifted: BeamColor {
+        BeamColor(r: b, g: r, b: g)
     }
 
     /// 目標色とのユークリッド距離

@@ -1,0 +1,48 @@
+{
+  "id": "level_018",
+  "title": "こぼれた光",
+  "size": 8,
+  "tolerance": 0.15,
+  "grid": {
+    "0,4": {
+      "kind": "source",
+      "rotation": 90,
+      "fixed": true
+    },
+    "1,2": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "2,4": {
+      "kind": "splitter",
+      "rotation": 0,
+      "fixed": true
+    },
+    "6,1": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "7,4": {
+      "kind": "goal",
+      "rotation": 0,
+      "fixed": true,
+      "color": {
+        "r": 1,
+        "g": 1,
+        "b": 1
+      }
+    }
+  },
+  "inventory": [
+    {
+      "kind": "mirror",
+      "count": 3
+    },
+    {
+      "kind": "combiner",
+      "count": 1
+    }
+  ]
+}

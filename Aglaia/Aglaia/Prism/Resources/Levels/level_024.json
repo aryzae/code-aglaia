@@ -1,0 +1,56 @@
+{
+  "id": "level_024",
+  "title": "まわしてあわせて",
+  "size": 9,
+  "tolerance": 0.15,
+  "grid": {
+    "0,4": {
+      "kind": "source",
+      "rotation": 90,
+      "fixed": true,
+      "color": {
+        "r": 1,
+        "g": 0,
+        "b": 0
+      }
+    },
+    "1,2": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "7,7": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "8,4": {
+      "kind": "goal",
+      "rotation": 0,
+      "fixed": true,
+      "color": {
+        "r": 0.5,
+        "g": 0.5,
+        "b": 0
+      }
+    }
+  },
+  "inventory": [
+    {
+      "kind": "splitter",
+      "count": 1
+    },
+    {
+      "kind": "shifter",
+      "count": 1
+    },
+    {
+      "kind": "combiner",
+      "count": 1
+    },
+    {
+      "kind": "mirror",
+      "count": 3
+    }
+  ]
+}

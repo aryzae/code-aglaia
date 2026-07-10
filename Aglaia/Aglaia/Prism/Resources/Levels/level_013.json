@@ -1,0 +1,44 @@
+{
+  "id": "level_013",
+  "title": "うごかせない鏡",
+  "size": 7,
+  "tolerance": 0.15,
+  "grid": {
+    "0,3": {
+      "kind": "source",
+      "rotation": 90,
+      "fixed": true
+    },
+    "1,6": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "3,3": {
+      "kind": "mirror",
+      "rotation": 0,
+      "fixed": true
+    },
+    "5,1": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "6,5": {
+      "kind": "goal",
+      "rotation": 0,
+      "fixed": true,
+      "color": {
+        "r": 1,
+        "g": 1,
+        "b": 1
+      }
+    }
+  },
+  "inventory": [
+    {
+      "kind": "mirror",
+      "count": 2
+    }
+  ]
+}

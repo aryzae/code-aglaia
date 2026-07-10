@@ -1,0 +1,57 @@
+{
+  "id": "level_022",
+  "title": "くるりと色がわり",
+  "size": 8,
+  "tolerance": 0.15,
+  "grid": {
+    "0,4": {
+      "kind": "source",
+      "rotation": 90,
+      "fixed": true,
+      "color": {
+        "r": 1,
+        "g": 0,
+        "b": 0
+      }
+    },
+    "2,2": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "5,6": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "7,4": {
+      "kind": "goal",
+      "rotation": 0,
+      "fixed": true,
+      "color": {
+        "r": 0,
+        "g": 1,
+        "b": 0
+      }
+    }
+  },
+  "inventory": [
+    {
+      "kind": "shifter",
+      "count": 1
+    },
+    {
+      "kind": "mirror",
+      "count": 1
+    },
+    {
+      "kind": "filter",
+      "count": 1,
+      "color": {
+        "r": 0,
+        "g": 1,
+        "b": 0
+      }
+    }
+  ]
+}

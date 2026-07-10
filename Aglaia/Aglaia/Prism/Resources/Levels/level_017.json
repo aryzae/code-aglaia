@@ -1,0 +1,62 @@
+{
+  "id": "level_017",
+  "title": "みどりの回廊",
+  "size": 8,
+  "tolerance": 0.15,
+  "grid": {
+    "0,4": {
+      "kind": "source",
+      "rotation": 90,
+      "fixed": true
+    },
+    "1,6": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "3,4": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "5,5": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "7,1": {
+      "kind": "goal",
+      "rotation": 0,
+      "fixed": true,
+      "color": {
+        "r": 0,
+        "g": 1,
+        "b": 0
+      }
+    }
+  },
+  "inventory": [
+    {
+      "kind": "mirror",
+      "count": 3
+    },
+    {
+      "kind": "filter",
+      "count": 1,
+      "color": {
+        "r": 0,
+        "g": 1,
+        "b": 0
+      }
+    },
+    {
+      "kind": "filter",
+      "count": 1,
+      "color": {
+        "r": 1,
+        "g": 0,
+        "b": 0
+      }
+    }
+  ]
+}

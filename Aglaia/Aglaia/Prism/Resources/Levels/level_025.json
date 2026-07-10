@@ -1,0 +1,67 @@
+{
+  "id": "level_025",
+  "title": "三色の輪",
+  "size": 9,
+  "tolerance": 0.15,
+  "grid": {
+    "0,4": {
+      "kind": "source",
+      "rotation": 90,
+      "fixed": true
+    },
+    "5,1": {
+      "kind": "goal",
+      "rotation": 0,
+      "fixed": true,
+      "color": {
+        "r": 1,
+        "g": 0,
+        "b": 0
+      }
+    },
+    "5,7": {
+      "kind": "goal",
+      "rotation": 0,
+      "fixed": true,
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 1
+      }
+    },
+    "6,6": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "7,2": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "8,4": {
+      "kind": "goal",
+      "rotation": 0,
+      "fixed": true,
+      "color": {
+        "r": 0,
+        "g": 1,
+        "b": 0
+      }
+    }
+  },
+  "inventory": [
+    {
+      "kind": "prism",
+      "count": 1
+    },
+    {
+      "kind": "shifter",
+      "count": 3
+    },
+    {
+      "kind": "mirror",
+      "count": 3
+    }
+  ]
+}

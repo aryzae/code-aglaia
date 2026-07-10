@@ -1,0 +1,71 @@
+{
+  "id": "level_021",
+  "title": "箱の中の太陽",
+  "size": 9,
+  "tolerance": 0.15,
+  "grid": {
+    "1,1": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "3,4": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "4,3": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "4,4": {
+      "kind": "source",
+      "rotation": 0,
+      "fixed": true
+    },
+    "5,4": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "7,2": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "8,6": {
+      "kind": "goal",
+      "rotation": 0,
+      "fixed": true,
+      "color": {
+        "r": 1,
+        "g": 0,
+        "b": 1
+      }
+    }
+  },
+  "inventory": [
+    {
+      "kind": "prism",
+      "count": 1
+    },
+    {
+      "kind": "combiner",
+      "count": 1
+    },
+    {
+      "kind": "mirror",
+      "count": 3
+    },
+    {
+      "kind": "filter",
+      "count": 1,
+      "color": {
+        "r": 1,
+        "g": 0,
+        "b": 0
+      }
+    }
+  ]
+}

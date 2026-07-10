@@ -202,9 +202,94 @@ final class PrismEngineTests: XCTestCase {
 
     func testバンドルの全ステージが読み込める() {
         let levels = LevelLoader.loadAll()
-        XCTAssertEqual(levels.count, 13)
+        XCTAssertEqual(levels.count, 26)
         XCTAssertEqual(levels.first?.id, "level_001")
         XCTAssertEqual(levels.last?.id, "level_051")
+    }
+
+    // MARK: - カラーシフタ
+
+    func testShifter_成分がRGBRと巡回する() {
+        XCTAssertEqual(BeamColor.red.shifted, .green)
+        XCTAssertEqual(BeamColor.green.shifted, .blue)
+        XCTAssertEqual(BeamColor.blue.shifted, .red)
+        // 白は巡回しても白のまま
+        XCTAssertEqual(BeamColor.white.shifted, .white)
+        // 半端な強度も成分ごとに巡回する
+        XCTAssertEqual(BeamColor(r: 0.5, g: 0, b: 1).shifted, BeamColor(r: 1, g: 0.5, b: 0))
+    }
+
+    func testShifter_赤い光源から緑を作る() {
+        // ステージ22「くるりと色がわり」と同じ構成
+        let level = Level(
+            id: "level_022", title: "くるりと色がわり", size: 8, tolerance: 0.15,
+            grid: [
+                GridPosition(x: 0, y: 4): PlacedComponent(kind: .source, rotation: 90,
+                                                          color: .red, fixed: true),
+                GridPosition(x: 7, y: 4): PlacedComponent(kind: .goal, color: .green, fixed: true),
+            ],
+            inventory: [InventoryItem(kind: .shifter, color: nil, count: 1)]
+        )
+        // 赤のままでは未クリア
+        XCTAssertFalse(BeamTracer.trace(level: level, placements: [:]).solved)
+
+        let placements: [GridPosition: PlacedComponent] = [
+            GridPosition(x: 3, y: 4): PlacedComponent(kind: .shifter, rotation: 0),
+        ]
+        let result = BeamTracer.trace(level: level, placements: placements)
+        XCTAssertTrue(result.solved)
+        XCTAssertEqual(result.goalColors[GridPosition(x: 7, y: 4)], .green)
+    }
+
+    func testShifter_スプリッタと合成器で半黄を作る() {
+        // ステージ24「まわしてあわせて」と同じ構成:
+        // 赤をスプリッタで割り、片方をシフトして緑にし、合成して (0.5, 0.5, 0)
+        let halfYellow = BeamColor(r: 0.5, g: 0.5, b: 0)
+        let level = Level(
+            id: "level_024", title: "まわしてあわせて", size: 9, tolerance: 0.15,
+            grid: [
+                GridPosition(x: 0, y: 4): PlacedComponent(kind: .source, rotation: 90,
+                                                          color: .red, fixed: true),
+                GridPosition(x: 8, y: 4): PlacedComponent(kind: .goal, color: halfYellow, fixed: true),
+            ],
+            inventory: [
+                InventoryItem(kind: .splitter, color: nil, count: 1),
+                InventoryItem(kind: .shifter, color: nil, count: 1),
+                InventoryItem(kind: .combiner, color: nil, count: 1),
+                InventoryItem(kind: .mirror, color: nil, count: 3),
+            ]
+        )
+        XCTAssertFalse(BeamTracer.trace(level: level, placements: [:]).solved)
+
+        let placements: [GridPosition: PlacedComponent] = [
+            GridPosition(x: 2, y: 4): PlacedComponent(kind: .splitter, rotation: 0),
+            GridPosition(x: 2, y: 6): PlacedComponent(kind: .mirror, rotation: 0),
+            GridPosition(x: 4, y: 6): PlacedComponent(kind: .shifter, rotation: 0),
+            GridPosition(x: 5, y: 6): PlacedComponent(kind: .mirror, rotation: 90),
+            GridPosition(x: 5, y: 4): PlacedComponent(kind: .combiner, rotation: 90),
+        ]
+        let result = BeamTracer.trace(level: level, placements: placements)
+        XCTAssertTrue(result.solved)
+        XCTAssertEqual(result.goalColors[GridPosition(x: 8, y: 4)], halfYellow)
+    }
+
+    func test固定部品はプレイヤー配置と衝突しない() {
+        // ステージ13「うごかせない鏡」: 固定鏡が経路を強制する
+        let level = Level(
+            id: "level_013", title: "うごかせない鏡", size: 7, tolerance: 0.15,
+            grid: [
+                GridPosition(x: 0, y: 3): PlacedComponent(kind: .source, rotation: 90, fixed: true),
+                GridPosition(x: 3, y: 3): PlacedComponent(kind: .mirror, rotation: 0, fixed: true),
+                GridPosition(x: 6, y: 5): PlacedComponent(kind: .goal, color: .white, fixed: true),
+            ],
+            inventory: [InventoryItem(kind: .mirror, color: nil, count: 2)]
+        )
+        let model = GameModel(level: level)
+        // 固定鏡のセルには配置できない
+        XCTAssertFalse(model.placeItem(model.level.inventory[0], at: GridPosition(x: 3, y: 3)))
+        // 固定鏡で曲がった先に鏡を置いてクリア
+        XCTAssertTrue(model.placeItem(model.level.inventory[0], at: GridPosition(x: 3, y: 5)))
+        XCTAssertTrue(model.solved)
     }
 
     // MARK: - スプリッタ(ハーフミラー)
@@ -284,14 +369,14 @@ final class PrismEngineTests: XCTestCase {
     func testLevelCatalog_パック別の振り分けと解放判定() {
         let catalog = LevelCatalog(levels: LevelLoader.loadAll())
         XCTAssertEqual(catalog.entries(in: .free).count, 10)
-        XCTAssertEqual(catalog.entries(in: .standard).count, 2)
+        XCTAssertEqual(catalog.entries(in: .standard).count, 15)
         XCTAssertEqual(catalog.entries(in: .extra).count, 1)
 
-        // 無料のみ → 10ステージ、全パック解放 → 13ステージ
+        // 無料のみ → 10ステージ、全パック解放 → 26ステージ
         XCTAssertEqual(catalog.playableLevels(unlockedPacks: [.free]).count, 10)
-        XCTAssertEqual(catalog.playableLevels(unlockedPacks: [.free, .standard, .extra]).count, 13)
+        XCTAssertEqual(catalog.playableLevels(unlockedPacks: [.free, .standard, .extra]).count, 26)
         // 並び順はステージ番号順
-        XCTAssertEqual(catalog.playableLevels(unlockedPacks: [.free, .standard]).last?.id, "level_012")
+        XCTAssertEqual(catalog.playableLevels(unlockedPacks: [.free, .standard]).last?.id, "level_025")
     }
 
     func testLevelCatalog_IDから番号を取り出す() {
