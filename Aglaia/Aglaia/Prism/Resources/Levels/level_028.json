@@ -1,0 +1,88 @@
+{
+  "id": "level_028",
+  "title": "ふたつのとびら",
+  "size": 9,
+  "tolerance": 0.15,
+  "grid": {
+    "0,4": {
+      "kind": "source",
+      "rotation": 90,
+      "fixed": true
+    },
+    "4,2": {
+      "kind": "warp",
+      "rotation": 0,
+      "fixed": true,
+      "color": {
+        "r": 1,
+        "g": 0.5,
+        "b": 0
+      }
+    },
+    "4,6": {
+      "kind": "warp",
+      "rotation": 0,
+      "fixed": true,
+      "color": {
+        "r": 1,
+        "g": 0.5,
+        "b": 0
+      }
+    },
+    "5,1": {
+      "kind": "warp",
+      "rotation": 0,
+      "fixed": true,
+      "color": {
+        "r": 0,
+        "g": 1,
+        "b": 1
+      }
+    },
+    "5,4": {
+      "kind": "warp",
+      "rotation": 0,
+      "fixed": true,
+      "color": {
+        "r": 0,
+        "g": 1,
+        "b": 1
+      }
+    },
+    "6,6": {
+      "kind": "goal",
+      "rotation": 0,
+      "fixed": true,
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 1
+      }
+    },
+    "7,7": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "8,1": {
+      "kind": "goal",
+      "rotation": 0,
+      "fixed": true,
+      "color": {
+        "r": 1,
+        "g": 0,
+        "b": 0
+      }
+    }
+  },
+  "inventory": [
+    {
+      "kind": "prism",
+      "count": 1
+    },
+    {
+      "kind": "mirror",
+      "count": 2
+    }
+  ]
+}

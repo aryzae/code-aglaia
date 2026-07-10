@@ -1,0 +1,69 @@
+{
+  "id": "level_033",
+  "title": "とびらと二役",
+  "size": 9,
+  "tolerance": 0.15,
+  "grid": {
+    "0,2": {
+      "kind": "source",
+      "rotation": 90,
+      "fixed": true
+    },
+    "1,8": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "4,0": {
+      "kind": "goal",
+      "rotation": 0,
+      "fixed": true,
+      "color": {
+        "r": 1,
+        "g": 1,
+        "b": 1
+      }
+    },
+    "4,8": {
+      "kind": "goal",
+      "rotation": 0,
+      "fixed": true,
+      "color": {
+        "r": 1,
+        "g": 1,
+        "b": 1
+      }
+    },
+    "6,6": {
+      "kind": "warp",
+      "rotation": 0,
+      "fixed": true,
+      "color": {
+        "r": 0,
+        "g": 1,
+        "b": 1
+      }
+    },
+    "8,2": {
+      "kind": "warp",
+      "rotation": 0,
+      "fixed": true,
+      "color": {
+        "r": 0,
+        "g": 1,
+        "b": 1
+      }
+    },
+    "8,6": {
+      "kind": "source",
+      "rotation": 270,
+      "fixed": true
+    }
+  },
+  "inventory": [
+    {
+      "kind": "mirror",
+      "count": 2
+    }
+  ]
+}

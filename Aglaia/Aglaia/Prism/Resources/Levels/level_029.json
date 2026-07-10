@@ -1,0 +1,72 @@
+{
+  "id": "level_029",
+  "title": "とんでまわって",
+  "size": 9,
+  "tolerance": 0.15,
+  "grid": {
+    "0,4": {
+      "kind": "source",
+      "rotation": 90,
+      "fixed": true,
+      "color": {
+        "r": 1,
+        "g": 0,
+        "b": 0
+      }
+    },
+    "2,7": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "4,0": {
+      "kind": "warp",
+      "rotation": 0,
+      "fixed": true,
+      "color": {
+        "r": 0,
+        "g": 1,
+        "b": 1
+      }
+    },
+    "4,4": {
+      "kind": "warp",
+      "rotation": 0,
+      "fixed": true,
+      "color": {
+        "r": 0,
+        "g": 1,
+        "b": 1
+      }
+    },
+    "8,0": {
+      "kind": "goal",
+      "rotation": 0,
+      "fixed": true,
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 1
+      }
+    }
+  },
+  "inventory": [
+    {
+      "kind": "shifter",
+      "count": 2
+    },
+    {
+      "kind": "filter",
+      "count": 1,
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 1
+      }
+    },
+    {
+      "kind": "mirror",
+      "count": 1
+    }
+  ]
+}

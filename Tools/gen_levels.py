@@ -31,8 +31,14 @@ CYAN = {"r": 0, "g": 1, "b": 1}
 MAGENTA = {"r": 1, "g": 0, "b": 1}
 HALF_WHITE = {"r": 0.5, "g": 0.5, "b": 0.5}
 HALF_RED = {"r": 0.5, "g": 0, "b": 0}
+HALF_GREEN = {"r": 0, "g": 0.5, "b": 0}
+HALF_BLUE = {"r": 0, "g": 0, "b": 0.5}
 HALF_YELLOW = {"r": 0.5, "g": 0.5, "b": 0}
+HALF_MAGENTA = {"r": 0.5, "g": 0, "b": 0.5}
 ORANGE = {"r": 1, "g": 0.5, "b": 0}
+# ワープゲートのペア識別色(見た目のティントも兼ねる)
+WARP_C = {"r": 0, "g": 1, "b": 1}
+WARP_O = {"r": 1, "g": 0.5, "b": 0}
 
 
 def quantized(c):
@@ -116,6 +122,12 @@ def trace_pass(size, board, combiner_inputs):
             elif kind == "shifter":
                 # R→G→B→R の巡回シフト(BeamColor.shifted と同一)
                 enqueue(nxt, direction, (color[2], color[0], color[1]))
+            elif kind == "warp":
+                # 同じペア色の対ゲートから同方向で出る。対が無ければ吸収
+                for p, c in board.items():
+                    if p != nxt and c["kind"] == "warp" and c.get("color") == comp.get("color"):
+                        enqueue(p, direction, color)
+                        break
             elif kind == "prism":
                 enqueue(nxt, direction, (color[0], 0, 0))
                 enqueue(nxt, (direction + 3) % 4, (0, color[1], 0))
@@ -211,6 +223,11 @@ def splitter(rot):
 
 def shifter():
     return {"kind": "shifter", "rotation": 0}
+
+
+def warp(pair_color):
+    """ワープゲート(盤面固定)。pair_color が同じ2つで1ペア"""
+    return {"kind": "warp", "rotation": 0, "fixed": True, "color": pair_color}
 
 
 def inv(kind, count, color=None):
@@ -374,6 +391,171 @@ STAGES = [
      [inv("prism", 1), inv("shifter", 3), inv("mirror", 3)],
      {(2, 4): prism(), (4, 4): shifter(), (2, 6): shifter(), (2, 7): mirror(0),
       (2, 2): shifter(), (2, 1): mirror(90)}),
+
+    # --- スタンダード 26〜33: ワープゲート登場(入門→既存要素との複合) ---
+    (26, "とびらのむこう", 8,
+     {(0, 4): src(90), (3, 4): warp(WARP_C), (3, 1): warp(WARP_C),
+      (6, 6): wall(), (1, 1): wall(), (5, 6): goal(WHITE)},
+     [inv("mirror", 2)],
+     {(5, 1): mirror(0)}),
+
+    (27, "くぐってあかく", 8,
+     {(0, 4): src(90), (2, 4): warp(WARP_C), (6, 6): warp(WARP_C),
+      (4, 2): wall(), (7, 6): goal(RED)},
+     [inv("filter", 1, RED), inv("mirror", 1)],
+     {(1, 4): filt(RED)}),
+
+    (28, "ふたつのとびら", 9,
+     {(0, 4): src(90), (5, 4): warp(WARP_C), (5, 1): warp(WARP_C),
+      (4, 2): warp(WARP_O), (4, 6): warp(WARP_O),
+      (7, 7): wall(), (8, 1): goal(RED), (6, 6): goal(BLUE)},
+     [inv("prism", 1), inv("mirror", 2)],
+     {(2, 4): prism(), (2, 2): mirror(90)}),
+
+    (29, "とんでまわって", 9,
+     {(0, 4): src(90, RED), (4, 4): warp(WARP_C), (4, 0): warp(WARP_C),
+      (2, 7): wall(), (8, 0): goal(BLUE)},
+     [inv("shifter", 2), inv("filter", 1, BLUE), inv("mirror", 1)],
+     {(1, 4): shifter(), (3, 4): shifter()}),
+
+    (30, "すれちがい", 9,
+     {(0, 6): src(90), (0, 2): src(90), (4, 6): warp(WARP_C), (4, 2): warp(WARP_C),
+      (7, 4): wall(), (8, 2): goal(RED), (8, 6): goal(BLUE)},
+     [inv("filter", 1, RED), inv("filter", 1, BLUE), inv("mirror", 1)],
+     {(2, 6): filt(RED), (2, 2): filt(BLUE)}),
+
+    (31, "はんぶんのとびら", 9,
+     {(0, 4): src(90), (3, 6): warp(WARP_C), (6, 2): warp(WARP_C),
+      (1, 7): wall(), (8, 4): goal(HALF_WHITE), (6, 8): goal(HALF_WHITE)},
+     [inv("splitter", 1), inv("mirror", 2)],
+     {(3, 4): splitter(0)}),
+
+    (32, "ちかみちの黄色", 9,
+     {(0, 4): src(90), (2, 6): warp(WARP_C), (5, 2): warp(WARP_C),
+      (6, 7): wall(), (8, 4): goal(YELLOW)},
+     [inv("prism", 1), inv("combiner", 1), inv("mirror", 1)],
+     {(2, 4): prism(), (5, 4): combiner(90)}),
+
+    (33, "とびらと二役", 9,
+     {(0, 2): src(90), (8, 6): src(270), (6, 6): warp(WARP_C), (8, 2): warp(WARP_C),
+      (1, 8): wall(), (4, 8): goal(WHITE), (4, 0): goal(WHITE)},
+     [inv("mirror", 2)],
+     {(4, 2): mirror(0)}),
+
+    # --- スタンダード 34〜42: 大盤面(10×10)+複合 ---
+    (34, "三色の大広間", 10,
+     {(0, 5): src(90), (1, 8): wall(), (8, 1): wall(), (6, 6): wall(), (6, 4): wall(),
+      (9, 5): goal(RED), (9, 7): goal(GREEN), (9, 3): goal(BLUE)},
+     [inv("prism", 1), inv("mirror", 4)],
+     {(3, 5): prism(), (3, 7): mirror(0), (3, 3): mirror(90)}),
+
+    (35, "半分と色がわり", 10,
+     {(0, 5): src(90, RED), (2, 7): warp(WARP_C), (6, 3): warp(WARP_C),
+      (8, 8): wall(), (9, 5): goal(HALF_RED), (6, 9): goal(HALF_GREEN)},
+     [inv("splitter", 1), inv("shifter", 1), inv("mirror", 1)],
+     {(2, 5): splitter(0), (6, 6): shifter()}),
+
+    (36, "わけあいの十字路", 10,
+     {(0, 5): src(90, RED), (5, 0): src(0, BLUE), (8, 8): wall(), (1, 1): wall(),
+      (2, 9): goal(HALF_RED), (9, 5): goal(HALF_RED),
+      (9, 3): goal(HALF_BLUE), (5, 9): goal(HALF_BLUE)},
+     [inv("splitter", 2), inv("mirror", 2)],
+     {(2, 5): splitter(0), (5, 3): splitter(0)}),
+
+    (37, "めぐる三色のとびら", 9,
+     {(0, 4): src(90), (4, 4): warp(WARP_C), (4, 8): warp(WARP_C),
+      (6, 2): wall(), (8, 8): goal(GREEN), (2, 8): goal(BLUE), (2, 0): goal(RED)},
+     [inv("prism", 1), inv("shifter", 3), inv("mirror", 1)],
+     {(2, 4): prism(), (6, 8): shifter(), (2, 6): shifter(), (2, 2): shifter()}),
+
+    (38, "はなればなれの半分", 10,
+     {(0, 5): src(90), (2, 5): fixed(splitter(0)), (2, 7): warp(WARP_C), (7, 2): warp(WARP_C),
+      (4, 8): wall(), (9, 5): goal(WHITE)},
+     [inv("combiner", 1), inv("mirror", 2)],
+     {(7, 5): combiner(90)}),
+
+    (39, "青の抜け道", 10,
+     {(0, 5): src(90), (5, 1): warp(WARP_C), (5, 7): warp(WARP_C),
+      (3, 2): wall(), (3, 3): wall(), (3, 4): wall(), (3, 5): wall(),
+      (3, 6): wall(), (3, 7): wall(), (3, 8): wall(),
+      (9, 7): goal(BLUE)},
+     [inv("mirror", 3), inv("filter", 1, BLUE), inv("filter", 1, RED)],
+     {(2, 5): mirror(90), (2, 1): mirror(90), (6, 7): filt(BLUE)}),
+
+    (40, "なかばの試練", 10,
+     {(0, 5): src(90), (1, 8): wall(), (8, 2): wall(), (9, 5): goal(HALF_MAGENTA)},
+     [inv("prism", 1), inv("combiner", 1), inv("splitter", 1), inv("mirror", 3)],
+     {(2, 5): prism(), (2, 3): mirror(90), (5, 3): mirror(0),
+      (5, 5): combiner(90), (7, 5): splitter(0)}),
+
+    (41, "二色のとびら", 10,
+     {(0, 5): src(90), (5, 5): warp(WARP_C), (5, 0): warp(WARP_C),
+      (3, 3): warp(WARP_O), (8, 7): warp(WARP_O),
+      (1, 7): wall(), (9, 0): goal(GREEN), (8, 2): goal(BLUE)},
+     [inv("prism", 1), inv("shifter", 1), inv("mirror", 2)],
+     {(3, 5): prism(), (7, 0): shifter()}),
+
+    (42, "そとまわりの水路", 10,
+     {(0, 8): src(90), (5, 5): wall(), (2, 2): wall(), (9, 1): goal(CYAN)},
+     [inv("mirror", 3), inv("filter", 1, CYAN), inv("filter", 1, YELLOW)],
+     {(8, 8): mirror(90), (8, 1): mirror(90), (4, 8): filt(CYAN)}),
+
+    # --- スタンダード 43〜50: 高難度(妨害固定部品・全色合成・総合) ---
+    (43, "よごれた道", 10,
+     {(0, 5): src(90, RED), (4, 5): fixed(shifter()), (6, 1): wall(), (1, 2): wall(),
+      (9, 5): goal(RED)},
+     [inv("mirror", 4), inv("shifter", 1)],
+     {(2, 5): mirror(0), (2, 7): mirror(0), (8, 7): mirror(90), (8, 5): mirror(90)}),
+
+    (44, "二重のとびら", 10,
+     {(0, 5): src(90), (3, 5): warp(WARP_C), (3, 1): warp(WARP_C),
+      (5, 4): warp(WARP_O), (8, 3): warp(WARP_O),
+      (2, 8): wall(), (8, 8): goal(MAGENTA)},
+     [inv("mirror", 2), inv("filter", 1, MAGENTA), inv("filter", 1, CYAN)],
+     {(5, 1): mirror(0), (8, 5): filt(MAGENTA)}),
+
+    (45, "みどりの大合流", 10,
+     {(0, 5): src(90), (1, 1): wall(), (8, 8): wall(), (9, 5): goal(GREEN)},
+     [inv("prism", 1), inv("shifter", 3), inv("mirror", 4), inv("combiner", 1)],
+     {(2, 5): prism(), (4, 5): shifter(),
+      (2, 7): mirror(0), (6, 7): mirror(90),
+      (2, 3): mirror(90), (3, 3): shifter(), (5, 3): shifter(), (6, 3): mirror(0),
+      (6, 5): combiner(90)}),
+
+    (46, "わかれたみち", 10,
+     {(0, 5): src(90), (7, 5): warp(WARP_C), (2, 2): warp(WARP_C),
+      (6, 8): wall(), (0, 7): goal(HALF_WHITE), (4, 9): goal(HALF_WHITE)},
+     [inv("splitter", 1), inv("mirror", 3), inv("shifter", 1)],
+     {(5, 5): splitter(0), (5, 7): mirror(90), (4, 2): mirror(0)}),
+
+    (47, "ひきざんの色", 10,
+     {(0, 5): src(90), (4, 2): wall(), (7, 8): wall(), (9, 5): goal(GREEN)},
+     [inv("filter", 1, YELLOW), inv("filter", 1, CYAN), inv("mirror", 2), inv("shifter", 1)],
+     {(3, 5): filt(YELLOW), (6, 5): filt(CYAN)}),
+
+    (48, "かどをまがって", 10,
+     {(5, 0): src(0, RED), (5, 4): warp(WARP_C), (2, 7): warp(WARP_C),
+      (8, 6): wall(), (9, 2): goal(HALF_RED), (2, 9): goal(HALF_GREEN)},
+     [inv("splitter", 1), inv("shifter", 1), inv("mirror", 2)],
+     {(5, 2): splitter(0), (2, 8): shifter()}),
+
+    (49, "しろへの帰還", 10,
+     {(0, 5): src(90), (5, 5): wall(),
+      (2, 7): warp(WARP_C), (7, 1): warp(WARP_C),
+      (2, 3): warp(WARP_O), (7, 9): warp(WARP_O),
+      (9, 5): goal(WHITE)},
+     [inv("prism", 1), inv("combiner", 1), inv("mirror", 4), inv("shifter", 1)],
+     {(2, 5): prism(), (4, 5): mirror(0), (4, 6): mirror(0),
+      (6, 6): mirror(90), (6, 5): mirror(90), (7, 5): combiner(90)}),
+
+    (50, "五十番目の扉", 10,
+     {(0, 5): src(90), (2, 3): fixed(mirror(90)),
+      (7, 7): warp(WARP_C), (3, 8): warp(WARP_C),
+      (9, 5): goal(HALF_MAGENTA), (3, 9): goal(HALF_MAGENTA), (2, 9): goal(BLUE)},
+     [inv("prism", 1), inv("combiner", 1), inv("splitter", 1),
+      inv("shifter", 1), inv("mirror", 2)],
+     {(2, 5): prism(), (6, 3): mirror(0), (6, 5): combiner(90),
+      (7, 5): splitter(0), (2, 7): shifter()}),
 
     # --- Extraパック(51〜100)。複合ギミックで高難度化 ---
     (51, "オレンジの結晶", 8,

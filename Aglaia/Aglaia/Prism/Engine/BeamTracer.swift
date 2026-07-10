@@ -139,6 +139,15 @@ enum BeamTracer {
                     // カラーシフタ: 成分を R→G→B→R に巡回させて直進(向きは影響しない)
                     enqueue(Beam(origin: next, direction: beam.direction, color: beam.color.shifted))
 
+                case .warp:
+                    // ワープゲート: 同じペア色の対ゲートから同方向で出る。対が無ければ吸収
+                    let partner = board.first {
+                        $0.key != next && $0.value.kind == .warp && $0.value.color == component.color
+                    }
+                    if let partner {
+                        enqueue(Beam(origin: partner.key, direction: beam.direction, color: beam.color))
+                    }
+
                 case .prism:
                     // 分光: R は直進、G は左折、B は右折(入射方向基準)
                     enqueue(Beam(origin: next, direction: beam.direction,

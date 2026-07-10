@@ -1,0 +1,57 @@
+{
+  "id": "level_042",
+  "title": "そとまわりの水路",
+  "size": 10,
+  "tolerance": 0.15,
+  "grid": {
+    "0,8": {
+      "kind": "source",
+      "rotation": 90,
+      "fixed": true
+    },
+    "2,2": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "5,5": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "9,1": {
+      "kind": "goal",
+      "rotation": 0,
+      "fixed": true,
+      "color": {
+        "r": 0,
+        "g": 1,
+        "b": 1
+      }
+    }
+  },
+  "inventory": [
+    {
+      "kind": "mirror",
+      "count": 3
+    },
+    {
+      "kind": "filter",
+      "count": 1,
+      "color": {
+        "r": 0,
+        "g": 1,
+        "b": 1
+      }
+    },
+    {
+      "kind": "filter",
+      "count": 1,
+      "color": {
+        "r": 1,
+        "g": 1,
+        "b": 0
+      }
+    }
+  ]
+}

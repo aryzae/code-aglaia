@@ -1,0 +1,51 @@
+{
+  "id": "level_040",
+  "title": "なかばの試練",
+  "size": 10,
+  "tolerance": 0.15,
+  "grid": {
+    "0,5": {
+      "kind": "source",
+      "rotation": 90,
+      "fixed": true
+    },
+    "1,8": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "8,2": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "9,5": {
+      "kind": "goal",
+      "rotation": 0,
+      "fixed": true,
+      "color": {
+        "r": 0.5,
+        "g": 0,
+        "b": 0.5
+      }
+    }
+  },
+  "inventory": [
+    {
+      "kind": "prism",
+      "count": 1
+    },
+    {
+      "kind": "combiner",
+      "count": 1
+    },
+    {
+      "kind": "splitter",
+      "count": 1
+    },
+    {
+      "kind": "mirror",
+      "count": 3
+    }
+  ]
+}

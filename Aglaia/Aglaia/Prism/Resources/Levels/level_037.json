@@ -1,0 +1,82 @@
+{
+  "id": "level_037",
+  "title": "めぐる三色のとびら",
+  "size": 9,
+  "tolerance": 0.15,
+  "grid": {
+    "0,4": {
+      "kind": "source",
+      "rotation": 90,
+      "fixed": true
+    },
+    "2,0": {
+      "kind": "goal",
+      "rotation": 0,
+      "fixed": true,
+      "color": {
+        "r": 1,
+        "g": 0,
+        "b": 0
+      }
+    },
+    "2,8": {
+      "kind": "goal",
+      "rotation": 0,
+      "fixed": true,
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 1
+      }
+    },
+    "4,4": {
+      "kind": "warp",
+      "rotation": 0,
+      "fixed": true,
+      "color": {
+        "r": 0,
+        "g": 1,
+        "b": 1
+      }
+    },
+    "4,8": {
+      "kind": "warp",
+      "rotation": 0,
+      "fixed": true,
+      "color": {
+        "r": 0,
+        "g": 1,
+        "b": 1
+      }
+    },
+    "6,2": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "8,8": {
+      "kind": "goal",
+      "rotation": 0,
+      "fixed": true,
+      "color": {
+        "r": 0,
+        "g": 1,
+        "b": 0
+      }
+    }
+  },
+  "inventory": [
+    {
+      "kind": "prism",
+      "count": 1
+    },
+    {
+      "kind": "shifter",
+      "count": 3
+    },
+    {
+      "kind": "mirror",
+      "count": 1
+    }
+  ]
+}

@@ -1,0 +1,102 @@
+{
+  "id": "level_039",
+  "title": "青の抜け道",
+  "size": 10,
+  "tolerance": 0.15,
+  "grid": {
+    "0,5": {
+      "kind": "source",
+      "rotation": 90,
+      "fixed": true
+    },
+    "3,2": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "3,3": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "3,4": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "3,5": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "3,6": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "3,7": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "3,8": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "5,1": {
+      "kind": "warp",
+      "rotation": 0,
+      "fixed": true,
+      "color": {
+        "r": 0,
+        "g": 1,
+        "b": 1
+      }
+    },
+    "5,7": {
+      "kind": "warp",
+      "rotation": 0,
+      "fixed": true,
+      "color": {
+        "r": 0,
+        "g": 1,
+        "b": 1
+      }
+    },
+    "9,7": {
+      "kind": "goal",
+      "rotation": 0,
+      "fixed": true,
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 1
+      }
+    }
+  },
+  "inventory": [
+    {
+      "kind": "mirror",
+      "count": 3
+    },
+    {
+      "kind": "filter",
+      "count": 1,
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 1
+      }
+    },
+    {
+      "kind": "filter",
+      "count": 1,
+      "color": {
+        "r": 1,
+        "g": 0,
+        "b": 0
+      }
+    }
+  ]
+}

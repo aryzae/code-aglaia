@@ -1,0 +1,51 @@
+{
+  "id": "level_045",
+  "title": "みどりの大合流",
+  "size": 10,
+  "tolerance": 0.15,
+  "grid": {
+    "0,5": {
+      "kind": "source",
+      "rotation": 90,
+      "fixed": true
+    },
+    "1,1": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "8,8": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "9,5": {
+      "kind": "goal",
+      "rotation": 0,
+      "fixed": true,
+      "color": {
+        "r": 0,
+        "g": 1,
+        "b": 0
+      }
+    }
+  },
+  "inventory": [
+    {
+      "kind": "prism",
+      "count": 1
+    },
+    {
+      "kind": "shifter",
+      "count": 3
+    },
+    {
+      "kind": "mirror",
+      "count": 4
+    },
+    {
+      "kind": "combiner",
+      "count": 1
+    }
+  ]
+}

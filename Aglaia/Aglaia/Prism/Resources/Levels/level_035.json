@@ -1,0 +1,77 @@
+{
+  "id": "level_035",
+  "title": "半分と色がわり",
+  "size": 10,
+  "tolerance": 0.15,
+  "grid": {
+    "0,5": {
+      "kind": "source",
+      "rotation": 90,
+      "fixed": true,
+      "color": {
+        "r": 1,
+        "g": 0,
+        "b": 0
+      }
+    },
+    "2,7": {
+      "kind": "warp",
+      "rotation": 0,
+      "fixed": true,
+      "color": {
+        "r": 0,
+        "g": 1,
+        "b": 1
+      }
+    },
+    "6,3": {
+      "kind": "warp",
+      "rotation": 0,
+      "fixed": true,
+      "color": {
+        "r": 0,
+        "g": 1,
+        "b": 1
+      }
+    },
+    "6,9": {
+      "kind": "goal",
+      "rotation": 0,
+      "fixed": true,
+      "color": {
+        "r": 0,
+        "g": 0.5,
+        "b": 0
+      }
+    },
+    "8,8": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "9,5": {
+      "kind": "goal",
+      "rotation": 0,
+      "fixed": true,
+      "color": {
+        "r": 0.5,
+        "g": 0,
+        "b": 0
+      }
+    }
+  },
+  "inventory": [
+    {
+      "kind": "splitter",
+      "count": 1
+    },
+    {
+      "kind": "shifter",
+      "count": 1
+    },
+    {
+      "kind": "mirror",
+      "count": 1
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "id": "level_038",
+  "title": "はなればなれの半分",
+  "size": 10,
+  "tolerance": 0.15,
+  "grid": {
+    "0,5": {
+      "kind": "source",
+      "rotation": 90,
+      "fixed": true
+    },
+    "2,5": {
+      "kind": "splitter",
+      "rotation": 0,
+      "fixed": true
+    },
+    "2,7": {
+      "kind": "warp",
+      "rotation": 0,
+      "fixed": true,
+      "color": {
+        "r": 0,
+        "g": 1,
+        "b": 1
+      }
+    },
+    "4,8": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "7,2": {
+      "kind": "warp",
+      "rotation": 0,
+      "fixed": true,
+      "color": {
+        "r": 0,
+        "g": 1,
+        "b": 1
+      }
+    },
+    "9,5": {
+      "kind": "goal",
+      "rotation": 0,
+      "fixed": true,
+      "color": {
+        "r": 1,
+        "g": 1,
+        "b": 1
+      }
+    }
+  },
+  "inventory": [
+    {
+      "kind": "combiner",
+      "count": 1
+    },
+    {
+      "kind": "mirror",
+      "count": 2
+    }
+  ]
+}

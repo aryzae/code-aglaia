@@ -202,9 +202,75 @@ final class PrismEngineTests: XCTestCase {
 
     func testバンドルの全ステージが読み込める() {
         let levels = LevelLoader.loadAll()
-        XCTAssertEqual(levels.count, 26)
+        XCTAssertEqual(levels.count, 51)
         XCTAssertEqual(levels.first?.id, "level_001")
         XCTAssertEqual(levels.last?.id, "level_051")
+    }
+
+    // MARK: - ワープゲート
+
+    func testWarp_対のゲートへ同方向で転送される() {
+        // ステージ26「とびらのむこう」と同じ構成
+        let pairColor = BeamColor(r: 0, g: 1, b: 1)
+        let level = Level(
+            id: "level_026", title: "とびらのむこう", size: 8, tolerance: 0.15,
+            grid: [
+                GridPosition(x: 0, y: 4): PlacedComponent(kind: .source, rotation: 90, fixed: true),
+                GridPosition(x: 3, y: 4): PlacedComponent(kind: .warp, color: pairColor, fixed: true),
+                GridPosition(x: 3, y: 1): PlacedComponent(kind: .warp, color: pairColor, fixed: true),
+                GridPosition(x: 5, y: 6): PlacedComponent(kind: .goal, color: .white, fixed: true),
+            ],
+            inventory: [InventoryItem(kind: .mirror, color: nil, count: 2)]
+        )
+        // 初期状態: 光はワープを抜けて盤外へ(ゴール未達)
+        XCTAssertFalse(BeamTracer.trace(level: level, placements: [:]).solved)
+
+        // ワープ先の経路に鏡を置いてクリア
+        let placements: [GridPosition: PlacedComponent] = [
+            GridPosition(x: 5, y: 1): PlacedComponent(kind: .mirror, rotation: 0),
+        ]
+        let result = BeamTracer.trace(level: level, placements: placements)
+        XCTAssertTrue(result.solved)
+        XCTAssertEqual(result.goalColors[GridPosition(x: 5, y: 6)], .white)
+    }
+
+    func testWarp_対が無いゲートは光を吸収する() {
+        let level = Level(
+            id: "warp_orphan", title: "orphan", size: 6, tolerance: 0.15,
+            grid: [
+                GridPosition(x: 0, y: 2): PlacedComponent(kind: .source, rotation: 90, fixed: true),
+                GridPosition(x: 2, y: 2): PlacedComponent(
+                    kind: .warp, color: BeamColor(r: 0, g: 1, b: 1), fixed: true),
+                GridPosition(x: 5, y: 2): PlacedComponent(kind: .goal, color: .white, fixed: true),
+            ],
+            inventory: []
+        )
+        let result = BeamTracer.trace(level: level, placements: [:])
+        XCTAssertFalse(result.solved)
+        XCTAssertTrue(result.goalColors.isEmpty)
+    }
+
+    func testWarp_双方向に通れる() {
+        // ステージ30「すれちがい」の骨格: 2本のビームが同じペアを逆向きに通過する
+        let pairColor = BeamColor(r: 0, g: 1, b: 1)
+        let level = Level(
+            id: "warp_bidirectional", title: "both", size: 9, tolerance: 0.15,
+            grid: [
+                GridPosition(x: 0, y: 6): PlacedComponent(kind: .source, rotation: 90, fixed: true),
+                GridPosition(x: 0, y: 2): PlacedComponent(kind: .source, rotation: 90, fixed: true),
+                GridPosition(x: 4, y: 6): PlacedComponent(kind: .warp, color: pairColor, fixed: true),
+                GridPosition(x: 4, y: 2): PlacedComponent(kind: .warp, color: pairColor, fixed: true),
+                GridPosition(x: 8, y: 2): PlacedComponent(kind: .goal, color: .white, fixed: true),
+                GridPosition(x: 8, y: 6): PlacedComponent(kind: .goal, color: .white, fixed: true),
+            ],
+            inventory: []
+        )
+        let result = BeamTracer.trace(level: level, placements: [:])
+        // y=6 のビームは (4,6)→(4,2) へ、y=2 のビームは (4,2)→(4,6) へ抜けて
+        // それぞれ反対側のゴールに白のまま届く
+        XCTAssertTrue(result.solved)
+        XCTAssertEqual(result.goalColors[GridPosition(x: 8, y: 2)], .white)
+        XCTAssertEqual(result.goalColors[GridPosition(x: 8, y: 6)], .white)
     }
 
     // MARK: - カラーシフタ
@@ -369,14 +435,14 @@ final class PrismEngineTests: XCTestCase {
     func testLevelCatalog_パック別の振り分けと解放判定() {
         let catalog = LevelCatalog(levels: LevelLoader.loadAll())
         XCTAssertEqual(catalog.entries(in: .free).count, 10)
-        XCTAssertEqual(catalog.entries(in: .standard).count, 15)
+        XCTAssertEqual(catalog.entries(in: .standard).count, 40)
         XCTAssertEqual(catalog.entries(in: .extra).count, 1)
 
-        // 無料のみ → 10ステージ、全パック解放 → 26ステージ
+        // 無料のみ → 10ステージ、全パック解放 → 51ステージ
         XCTAssertEqual(catalog.playableLevels(unlockedPacks: [.free]).count, 10)
-        XCTAssertEqual(catalog.playableLevels(unlockedPacks: [.free, .standard, .extra]).count, 26)
+        XCTAssertEqual(catalog.playableLevels(unlockedPacks: [.free, .standard, .extra]).count, 51)
         // 並び順はステージ番号順
-        XCTAssertEqual(catalog.playableLevels(unlockedPacks: [.free, .standard]).last?.id, "level_025")
+        XCTAssertEqual(catalog.playableLevels(unlockedPacks: [.free, .standard]).last?.id, "level_050")
     }
 
     func testLevelCatalog_IDから番号を取り出す() {

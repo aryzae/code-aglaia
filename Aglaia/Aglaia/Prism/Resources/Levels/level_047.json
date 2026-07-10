@@ -1,0 +1,61 @@
+{
+  "id": "level_047",
+  "title": "ひきざんの色",
+  "size": 10,
+  "tolerance": 0.15,
+  "grid": {
+    "0,5": {
+      "kind": "source",
+      "rotation": 90,
+      "fixed": true
+    },
+    "4,2": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "7,8": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "9,5": {
+      "kind": "goal",
+      "rotation": 0,
+      "fixed": true,
+      "color": {
+        "r": 0,
+        "g": 1,
+        "b": 0
+      }
+    }
+  },
+  "inventory": [
+    {
+      "kind": "filter",
+      "count": 1,
+      "color": {
+        "r": 1,
+        "g": 1,
+        "b": 0
+      }
+    },
+    {
+      "kind": "filter",
+      "count": 1,
+      "color": {
+        "r": 0,
+        "g": 1,
+        "b": 1
+      }
+    },
+    {
+      "kind": "mirror",
+      "count": 2
+    },
+    {
+      "kind": "shifter",
+      "count": 1
+    }
+  ]
+}

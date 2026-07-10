@@ -1,0 +1,53 @@
+{
+  "id": "level_043",
+  "title": "よごれた道",
+  "size": 10,
+  "tolerance": 0.15,
+  "grid": {
+    "0,5": {
+      "kind": "source",
+      "rotation": 90,
+      "fixed": true,
+      "color": {
+        "r": 1,
+        "g": 0,
+        "b": 0
+      }
+    },
+    "1,2": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "4,5": {
+      "kind": "shifter",
+      "rotation": 0,
+      "fixed": true
+    },
+    "6,1": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "9,5": {
+      "kind": "goal",
+      "rotation": 0,
+      "fixed": true,
+      "color": {
+        "r": 1,
+        "g": 0,
+        "b": 0
+      }
+    }
+  },
+  "inventory": [
+    {
+      "kind": "mirror",
+      "count": 4
+    },
+    {
+      "kind": "shifter",
+      "count": 1
+    }
+  ]
+}

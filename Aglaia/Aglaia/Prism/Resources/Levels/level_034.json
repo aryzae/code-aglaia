@@ -1,0 +1,73 @@
+{
+  "id": "level_034",
+  "title": "三色の大広間",
+  "size": 10,
+  "tolerance": 0.15,
+  "grid": {
+    "0,5": {
+      "kind": "source",
+      "rotation": 90,
+      "fixed": true
+    },
+    "1,8": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "6,4": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "6,6": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "8,1": {
+      "kind": "wall",
+      "rotation": 0,
+      "fixed": true
+    },
+    "9,3": {
+      "kind": "goal",
+      "rotation": 0,
+      "fixed": true,
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 1
+      }
+    },
+    "9,5": {
+      "kind": "goal",
+      "rotation": 0,
+      "fixed": true,
+      "color": {
+        "r": 1,
+        "g": 0,
+        "b": 0
+      }
+    },
+    "9,7": {
+      "kind": "goal",
+      "rotation": 0,
+      "fixed": true,
+      "color": {
+        "r": 0,
+        "g": 1,
+        "b": 0
+      }
+    }
+  },
+  "inventory": [
+    {
+      "kind": "prism",
+      "count": 1
+    },
+    {
+      "kind": "mirror",
+      "count": 4
+    }
+  ]
+}

@@ -290,6 +290,23 @@ final class PrismScene: SKScene {
                 node.addChild(dot)
             }
 
+        case .warp:
+            // ワープゲート: ペア色の二重リング+回転する破線で「渦」を表す
+            let tint = color ?? SKColor.cyan
+            let outer = SKShapeNode(circleOfRadius: unit * 0.85)
+            outer.strokeColor = tint
+            outer.lineWidth = 3
+            outer.glowWidth = 2
+            node.addChild(outer)
+            let dashed = SKShapeNode(
+                path: CGPath(ellipseIn: CGRect(x: -unit * 0.5, y: -unit * 0.5,
+                                               width: unit, height: unit), transform: nil)
+                    .copy(dashingWithPhase: 0, lengths: [unit * 0.35, unit * 0.25]))
+            dashed.strokeColor = tint.withAlphaComponent(0.8)
+            dashed.lineWidth = 2
+            dashed.run(.repeatForever(.rotate(byAngle: .pi * 2, duration: 4)))
+            node.addChild(dashed)
+
         case .prism:
             let triangle = polygonNode(points: [
                 CGPoint(x: 0, y: unit), CGPoint(x: unit, y: -unit), CGPoint(x: -unit, y: -unit),
