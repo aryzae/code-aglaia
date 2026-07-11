@@ -202,30 +202,61 @@ final class PrismScene: SKScene {
         core.blendMode = .add
         container.addChild(core)
 
-        // 進行方向へ流れる光の粒(光源→先端の向きが常時わかるように)
+        // 光の粒子(2層): 進行方向へ流れるストリーム+ビーム全体で舞う飛沫
         let dx = to.x - from.x, dy = to.y - from.y
         let length = hypot(dx, dy)
         if length > cellSize * 0.3 {
-            let speed = cellSize * 2.2 // 1秒あたりの流れる距離
-            let duration = TimeInterval(length / speed)
-            let count = max(1, Int(length / (cellSize * 0.9)))
-            for index in 0 ..< count {
-                let dot = SKShapeNode(circleOfRadius: cellSize * 0.055)
-                dot.fillColor = .white
-                dot.strokeColor = .clear
-                dot.alpha = 0.85
-                dot.blendMode = .add
-                // 粒を等間隔に配置し、残り区間 → 全区間ループで途切れなく流す
-                let fraction = CGFloat(index) / CGFloat(count)
-                dot.position = CGPoint(x: from.x + dx * fraction, y: from.y + dy * fraction)
-                let firstLeg = SKAction.move(to: to, duration: duration * (1 - Double(fraction)))
-                let loop = SKAction.sequence([
-                    .move(to: from, duration: 0),
-                    .move(to: to, duration: duration),
-                ])
-                dot.run(.sequence([firstLeg, .repeatForever(loop)]))
-                container.addChild(dot)
-            }
+            let cells = length / cellSize
+            let angle = atan2(dy, dx)
+            // 進行方向と直交する単位ベクトル(ビームは軸平行なので positionRange に使える)
+            let perp = CGVector(dx: -sin(angle), dy: cos(angle))
+
+            // 層1: 光源→先端へ流れるストリーム(指向性の表現)
+            let flow = SKEmitterNode()
+            flow.particleTexture = Self.particleTexture
+            flow.position = from
+            flow.emissionAngle = angle
+            flow.emissionAngleRange = 0.06
+            let speed = cellSize * 2.4
+            flow.particleSpeed = speed
+            flow.particleLifetime = length / speed
+            flow.particleBirthRate = 6 * cells
+            // ビームの太さぶんだけ発生位置を散らす
+            flow.particlePositionRange = CGVector(dx: abs(perp.dx) * cellSize * 0.16,
+                                                  dy: abs(perp.dy) * cellSize * 0.16)
+            flow.particleScale = cellSize / 240
+            flow.particleScaleRange = cellSize / 300
+            flow.particleAlpha = 0.9
+            flow.particleAlphaRange = 0.3
+            flow.particleColor = skColor
+            flow.particleColorBlendFactor = 0.6
+            flow.particleBlendMode = .add
+            // 生成直後からビーム全体に粒が行き渡った状態にする
+            flow.advanceSimulationTime(TimeInterval(flow.particleLifetime + 0.3))
+            container.addChild(flow)
+
+            // 層2: ビーム全域でランダムに弾ける飛沫(粒子が飛んでいる質感)
+            let sparks = SKEmitterNode()
+            sparks.particleTexture = Self.particleTexture
+            sparks.position = CGPoint(x: (from.x + to.x) / 2, y: (from.y + to.y) / 2)
+            // ビームに沿った細長い箱から発生させる
+            sparks.particlePositionRange = CGVector(dx: abs(dx) + abs(perp.dx) * cellSize * 0.1,
+                                                    dy: abs(dy) + abs(perp.dy) * cellSize * 0.1)
+            sparks.emissionAngleRange = .pi * 2
+            sparks.particleSpeed = cellSize * 0.55
+            sparks.particleSpeedRange = cellSize * 0.4
+            sparks.particleLifetime = 0.45
+            sparks.particleLifetimeRange = 0.25
+            sparks.particleBirthRate = 5 * cells
+            sparks.particleScale = cellSize / 320
+            sparks.particleScaleRange = cellSize / 400
+            sparks.particleAlpha = 0.8
+            sparks.particleAlphaSpeed = -1.6
+            sparks.particleColor = skColor
+            sparks.particleColorBlendFactor = 0.5
+            sparks.particleBlendMode = .add
+            sparks.advanceSimulationTime(0.7)
+            container.addChild(sparks)
         }
         return container
     }
