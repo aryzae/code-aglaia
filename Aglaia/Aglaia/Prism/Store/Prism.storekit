@@ -1,0 +1,50 @@
+{
+  "identifier" : "A1B2C3D4",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "480",
+      "familyShareable" : false,
+      "internalID" : "6F1A2B3C",
+      "localizations" : [
+        {
+          "description" : "ステージ11〜50を解放します。新部品スプリッタが登場します。",
+          "displayName" : "スタンダードパック",
+          "locale" : "ja"
+        }
+      ],
+      "productID" : "jp.aryzae.Aglaia.prism.pack.standard",
+      "referenceName" : "Prism Standard Pack",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "730",
+      "familyShareable" : false,
+      "internalID" : "7A2B3C4D",
+      "localizations" : [
+        {
+          "description" : "ステージ51〜100を解放します。複合ギミックの高難度ステージです。",
+          "displayName" : "Extraパック",
+          "locale" : "ja"
+        }
+      ],
+      "productID" : "jp.aryzae.Aglaia.prism.pack.extra",
+      "referenceName" : "Prism Extra Pack",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+    "_applicationInternalID" : "0",
+    "_developerTeamID" : "U38WFWB5D6",
+    "_lastSynchronizedDate" : 0
+  },
+  "subscriptionGroups" : [
+
+  ],
+  "version" : {
+    "major" : 3,
+    "minor" : 0
+  }
+}

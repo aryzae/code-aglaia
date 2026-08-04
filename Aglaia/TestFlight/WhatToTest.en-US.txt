@@ -1,0 +1,19 @@
+Test build of "Prism", a puzzle game about guiding light and mixing colors.
+
+What you can try in this build
+- All 51 stages (10 free / 40 standard / 1 extra)
+- Placing parts: drag and drop from the palette, tap to select then drag on the
+  board for a placement preview, tap to rotate, drag to move, drag off the board
+  to return a part to your inventory
+- Light particle effects, sparkles on activated crystals, clear burst
+- Clear marks on completed stages (kept across app launches)
+
+What to focus on
+- Does the board respond where your finger actually is (no offset in the preview)?
+- Are the stages unreasonably hard, or too easy?
+- Can you tell the light colors and strengths apart by eye (especially strong vs weak)?
+- Any slowdown, particularly on the larger 9x9 and 10x10 boards?
+
+Known limitations
+- In-app purchases (Standard / Extra packs) are tested in the sandbox environment
+- No music or sound effects yet

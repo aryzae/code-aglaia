@@ -163,8 +163,15 @@ struct BeamSegment {                 // 描画用の1本の線分
 ### ステージ構造・課金
 - ステージは Codable JSON(`Levels/level_001.json` 形式の3桁連番)。フォルダに置くだけで一覧へ反映。
 - パック: **無料 1〜10 / スタンダード 11〜50(IAP) / Extra 51〜100(IAP)**。
-  - プロダクトID: `com.aryzae.aglaia.prism.pack.standard` / `com.aryzae.aglaia.prism.pack.extra`(非消耗型)
+  - プロダクトID: `jp.aryzae.Aglaia.prism.pack.standard` / `jp.aryzae.Aglaia.prism.pack.extra`(非消耗型)
+    ※バンドルIDに接頭辞を揃えている。App Store Connect で作成後は変更・再利用できない
   - StoreKit 2(`PrismStore`)で購入・復元・`Transaction.currentEntitlements` による解放判定。
+- ローカル課金テスト用に `Prism.storekit`(StoreKit 構成ファイル)を同梱。
+
+### CI/CD
+- **Xcode Cloud** でビルド・テスト・TestFlight 配信を行う。設定手順は `docs/xcode-cloud.md` を参照。
+- `ci_post_clone.sh` が全ステージの解答可能性を機械検証し、壊れたステージの配信を防ぐ。
+- `ci_pre_xcodebuild.sh` が Xcode Cloud のビルド番号をアプリに反映する。
 - 在庫(`inventory`)は部品種別+色ごとに個数制限。
 
 ### 操作・演出

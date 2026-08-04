@@ -43,12 +43,15 @@ enum LevelPack: String, CaseIterable, Identifiable {
         }
     }
 
-    /// App Store Connect に登録する非消耗型プロダクトID。無料パックは nil
+    /// App Store Connect に登録する非消耗型プロダクトID。無料パックは nil。
+    /// バンドルID(jp.aryzae.Aglaia)を接頭辞に揃えている。
+    /// 注意: App Store Connect で一度作成したプロダクトIDは変更・再利用できないため、
+    ///       登録前にこの値で確定していること。
     var productID: String? {
         switch self {
         case .free: return nil
-        case .standard: return "com.aryzae.aglaia.prism.pack.standard"
-        case .extra: return "com.aryzae.aglaia.prism.pack.extra"
+        case .standard: return "jp.aryzae.Aglaia.prism.pack.standard"
+        case .extra: return "jp.aryzae.Aglaia.prism.pack.extra"
         }
     }
 

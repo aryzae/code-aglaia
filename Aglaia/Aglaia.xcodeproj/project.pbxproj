@@ -50,7 +50,6 @@
 		C6E6749D2C92E03600136943 /* Aglaia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Aglaia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6E674A02C92E03600136943 /* AglaiaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AglaiaApp.swift; sourceTree = "<group>"; };
 		C6E674A42C92E03800136943 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		C6E674A62C92E03800136943 /* Aglaia.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Aglaia.entitlements; sourceTree = "<group>"; };
 		C6E674A82C92E03800136943 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		C6E674AE2C92E03800136943 /* AglaiaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AglaiaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6E674B22C92E03800136943 /* AglaiaTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AglaiaTests.swift; sourceTree = "<group>"; };
@@ -70,6 +69,7 @@
 		A11AD0DE000000000000F00B /* LevelCatalog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelCatalog.swift; sourceTree = "<group>"; };
 		A11AD0DE000000000000F00C /* PrismStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrismStore.swift; sourceTree = "<group>"; };
 		A11AD0DE000000000000F00D /* ProgressStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressStore.swift; sourceTree = "<group>"; };
+		A11AD0DE000000000000F00E /* Prism.storekit */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Prism.storekit; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,7 +121,6 @@
 		C6E6749F2C92E03600136943 /* Aglaia */ = {
 			isa = PBXGroup;
 			children = (
-				C6E674A62C92E03800136943 /* Aglaia.entitlements */,
 				C6E674A02C92E03600136943 /* AglaiaApp.swift */,
 				C6E674A42C92E03800136943 /* Assets.xcassets */,
 				A11AD0DE0000000000000101 /* Prism */,
@@ -201,6 +200,7 @@
 			isa = PBXGroup;
 			children = (
 				A11AD0DE000000000000F00C /* PrismStore.swift */,
+				A11AD0DE000000000000F00E /* Prism.storekit */,
 			);
 			path = Store;
 			sourceTree = "<group>";
@@ -376,7 +376,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\ncd BuildTools\nSDKROOT=(xcrun --sdk macosx --show-sdk-path)\n#swift package update #Uncomment this line temporarily to update the version used to the latest matching your BuildTools/Package.swift file\nswift run -c release swiftformat \"$SRCROOT\" --swiftversion ${SWIFT_VERSION:-\"default\"}\n";
+			shellScript = "# CI(Xcode Cloud)ではソースを書き換えるべきでなく、SwiftFormat の\n# ビルドに時間がかかるためスキップする\nif [ \"$CI\" = \"TRUE\" ]; then\n    echo \"note: CI 環境のため SwiftFormat をスキップしました\"\n    exit 0\nfi\ncd BuildTools\nSDKROOT=(xcrun --sdk macosx --show-sdk-path)\n#swift package update #Uncomment this line temporarily to update the version used to the latest matching your BuildTools/Package.swift file\nswift run -c release swiftformat \"$SRCROOT\" --swiftversion ${SWIFT_VERSION:-\"default\"}\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -553,7 +553,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = Aglaia/Aglaia.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -582,7 +581,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = jp.aryzae.Aglaia;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -594,7 +593,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = Aglaia/Aglaia.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Aglaia/Preview Content\"";
@@ -622,7 +620,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = jp.aryzae.Aglaia;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -644,7 +642,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = jp.aryzae.AglaiaTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -667,7 +665,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = jp.aryzae.AglaiaTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -689,7 +687,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = jp.aryzae.AglaiaUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -711,7 +709,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = jp.aryzae.AglaiaUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
